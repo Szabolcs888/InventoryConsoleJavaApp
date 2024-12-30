@@ -1,12 +1,12 @@
 package com.myinventoryapp.dataio;
 
-import com.myinventoryapp.datastorage.CustomerRepository;
-import com.myinventoryapp.inventoryentities.Product;
+import com.myinventoryapp.repository.CustomerRepository;
+import com.myinventoryapp.entities.Product;
 import com.myinventoryapp.util.FileUtils;
-import com.myinventoryapp.datastorage.ProductRepository;
-import com.myinventoryapp.datastorage.SalesTransactionRepository;
-import com.myinventoryapp.inventoryentities.Customer;
-import com.myinventoryapp.inventoryentities.SalesTransaction;
+import com.myinventoryapp.repository.ProductRepository;
+import com.myinventoryapp.repository.SalesTransactionRepository;
+import com.myinventoryapp.entities.Customer;
+import com.myinventoryapp.entities.SalesTransaction;
 
 public class DataSaver {
 

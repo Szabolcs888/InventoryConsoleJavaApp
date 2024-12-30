@@ -1,7 +1,7 @@
 package com.myinventoryapp.util.displayhelpers;
 
-import com.myinventoryapp.datastorage.ProductRepository;
-import com.myinventoryapp.inventoryentities.SalesTransaction;
+import com.myinventoryapp.entities.Product;
+import com.myinventoryapp.entities.SalesTransaction;
 
 import java.util.List;
 
@@ -16,27 +16,36 @@ public class TransactionDisplayHelper {
         } else {
             System.out.println(GREEN.getColorCode() + "There are a total of " + transactionList.size() +
                     " transactions in the inventory:" + RESET.getColorCode());
-            for (SalesTransaction item : transactionList) {
-                System.out.println(item.getTransactionId() + ", Date: " + item.getTransactionDate() + ", Product: " + item.getProductName() +
-                        ", Quantity: " + item.getQuantitySold() + ", Amount paid: " + item.getQuantitySold() + " * " + item.getUnitPrice() +
-                        " = " + (item.getQuantitySold() * item.getUnitPrice()) + " HUF, Customer: " +
-                        item.getCustomerName() + " (" + item.getCustomerId() + ")");
+            for (SalesTransaction transaction : transactionList) {
+                System.out.println(transaction.getTransactionId() +
+                        ", Date: " + transaction.getTransactionDate() +
+                        ", Product: " + transaction.getProductName() +
+                        ", Quantity: " + transaction.getQuantitySold() +
+                        ", Amount paid: " + transaction.getQuantitySold() +
+                        " * " + transaction.getUnitPrice() +
+                        " = " + (transaction.getQuantitySold() * transaction.getUnitPrice()) +
+                        " HUF, Customer: " + transaction.getCustomerName() +
+                        " (" + transaction.getCustomerId() + ")");
             }
         }
         System.out.println();
     }
 
     public static void displayTransactionInfo(
-            int productIndex, String productName, int quantitySold, String customerName, String customerId, boolean isRegisteredCustomer, String transactionDate) {
+            Product product, int quantitySold, String customerName,
+            String customerId, boolean isRegisteredCustomer, String transactionDate) {
         System.out.println(GREEN.getColorCode() + "TRANSACTION DETAILS: " + RESET.getColorCode() +
-                "\nProduct name: " + productName + " (" + ProductRepository.getProductList().get(productIndex).getProductId() + ")");
-        if (isRegisteredCustomer)
-            System.out.println("\"Customer name: " + customerName + " (" + customerId + " / returning customer)");
-        else
+                "\nProduct name: " + product.getProductName() + " (" + product.getProductId() + ")");
+        if (isRegisteredCustomer) {
+            System.out.println("Customer name: " + customerName + " (" + customerId + " / returning customer)");
+        } else {
             System.out.println("Customer name: " + customerName + " (" + customerId + " / newly registered)");
+        }
         System.out.println("Quantity sold: " + quantitySold +
-                "\nAmount paid: " + quantitySold + " * " + ProductRepository.getProductList().get(productIndex).getUnitPrice() +
-                " = " + ProductRepository.getProductList().get(productIndex).getUnitPrice() * quantitySold + " HUF" +
+                "\nAmount paid: " + quantitySold +
+                " * " + product.getUnitPrice() +
+                " = " + product.getUnitPrice() * quantitySold +
+                " HUF" +
                 "\nTransaction date: " + transactionDate);
     }
 }

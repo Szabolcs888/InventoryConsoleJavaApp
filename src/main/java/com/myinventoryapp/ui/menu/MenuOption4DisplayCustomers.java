@@ -1,8 +1,8 @@
-package com.myinventoryapp.inventoryimplementation;
+package com.myinventoryapp.ui.menu;
 
 import com.myinventoryapp.util.displayhelpers.CustomerDisplayHelper;
-import com.myinventoryapp.datastorage.CustomerRepository;
-import com.myinventoryapp.inventoryentities.Customer;
+import com.myinventoryapp.repository.CustomerRepository;
+import com.myinventoryapp.entities.Customer;
 
 import java.util.List;
 

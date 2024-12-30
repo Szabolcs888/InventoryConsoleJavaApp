@@ -1,6 +1,6 @@
 Nagy Anna,2160,cID5916556
 Kocsis Zoltán,17520,cID2088505
-Kovács Ágnes,14619,cID5513060
+Kovács Ágnes,17019,cID5513060
 Szabó Tibor,12608,cID6067122
 Lakatos Regina,3865,cID1506683
 Dallos Jenö,8244,cID6232706

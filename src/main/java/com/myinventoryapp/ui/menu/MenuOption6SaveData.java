@@ -1,4 +1,4 @@
-package com.myinventoryapp.inventoryimplementation;
+package com.myinventoryapp.ui.menu;
 
 import com.myinventoryapp.dataio.DataSaver;
 

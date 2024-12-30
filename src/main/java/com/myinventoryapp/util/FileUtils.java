@@ -31,7 +31,7 @@ public class FileUtils {
             new File("src/main/resources").mkdirs();
             Files.write(Paths.get(path), content.getBytes("ISO-8859-1"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to write to file: " + path, e);
         }
     }
 }

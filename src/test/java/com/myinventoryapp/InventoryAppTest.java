@@ -1,6 +1,6 @@
 package com.myinventoryapp;
 
-import com.myinventoryapp.inventoryimplementation.*;
+import com.myinventoryapp.ui.menu.*;
 import com.myinventoryapp.util.ErrorHandler;
 
 import static org.mockito.Mockito.*;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class InventoryAppTest {
 
     @Test
-    public void testMenuSelectionValidInput() {
+    void testMenuSelection_ValidInput() {
         String expectedMessage = "You can choose from the following menu items:";
 
         String simulatedInput = "3\n";
@@ -38,7 +38,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testMenuSelectionInvalidInput() {
+    void testMenuSelection_InvalidInput() {
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString()))
                     .thenReturn(0)
@@ -57,7 +57,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testTransactionSelectorExecutesMenuOption1Sell() {
+    void testTransactionSelector_ExecutesMenuOption1Sell() {
         InventoryApp inventoryApp = Mockito.spy(new InventoryApp());
 
         MenuOption1Sell mockSellMenu = mock(MenuOption1Sell.class);
@@ -73,7 +73,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testTransactionSelectorExecutesMenuOption2GoodsReceipt() {
+    void testTransactionSelector_ExecutesMenuOption2GoodsReceipt() {
         InventoryApp inventoryApp = Mockito.spy(new InventoryApp());
 
         MenuOption2GoodsReceipt mockGoodsReceipt = mock(MenuOption2GoodsReceipt.class);
@@ -89,7 +89,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testTransactionSelectorExecutesMenuOption3DisplayProducts() {
+    void testTransactionSelector_ExecutesMenuOption3DisplayProducts() {
         InventoryApp inventoryApp = Mockito.spy(new InventoryApp());
 
         MenuOption3DisplayProducts mockDisplayProducts = mock(MenuOption3DisplayProducts.class);
@@ -105,7 +105,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testTransactionSelectorExecutesMenuOption4DisplayCustomers() {
+    void testTransactionSelector_ExecutesMenuOption4DisplayCustomers() {
         InventoryApp inventoryApp = Mockito.spy(new InventoryApp());
 
         MenuOption4DisplayCustomers mockDisplayCustomers = mock(MenuOption4DisplayCustomers.class);
@@ -121,7 +121,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testTransactionSelectorExecutesMenuOption5DisplayTransactions() {
+    void testTransactionSelector_ExecutesMenuOption5DisplayTransactions() {
         InventoryApp inventoryApp = Mockito.spy(new InventoryApp());
 
         MenuOption5DisplayTransactions mockDisplayTransactions = mock(MenuOption5DisplayTransactions.class);
@@ -137,7 +137,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testTransactionSelectorExecutesMenuOption6SaveData() {
+    void testTransactionSelector_ExecutesMenuOption6SaveData() {
         InventoryApp inventoryApp = new InventoryApp();
 
         MenuOption6SaveData mockSaveData = mock(MenuOption6SaveData.class);
@@ -149,7 +149,7 @@ class InventoryAppTest {
     }
 
     @Test
-    public void testTransactionSelectorWithMenuSelection() {
+    void testTransactionSelector_WithMenuSelection() {
         InventoryApp inventoryApp = Mockito.spy(new InventoryApp());
 
         MenuOption1Sell mockSellMenu = mock(MenuOption1Sell.class);

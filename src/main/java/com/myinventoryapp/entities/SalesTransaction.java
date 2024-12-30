@@ -1,4 +1,4 @@
-package com.myinventoryapp.inventoryentities;
+package com.myinventoryapp.entities;
 
 import java.util.Objects;
 
@@ -11,7 +11,9 @@ public class SalesTransaction {
     private int unitPrice;
     private String transactionDate;
 
-    public SalesTransaction(String transactionId, String customerName, String customerId, String productName, int quantitySold, int unitPrice, String transactionDate) {
+    public SalesTransaction(
+            String transactionId, String customerName, String customerId, String productName,
+            int quantitySold, int unitPrice, String transactionDate) {
         this.transactionId = transactionId;
         this.customerName = customerName;
         this.customerId = customerId;
@@ -51,8 +53,12 @@ public class SalesTransaction {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         SalesTransaction salesTransaction = (SalesTransaction) o;
         return Objects.equals(transactionId, salesTransaction.transactionId) &&
                 Objects.equals(customerName, salesTransaction.customerName) &&
@@ -65,6 +71,7 @@ public class SalesTransaction {
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionId, customerName, customerId, productName, quantitySold, unitPrice, transactionDate);
+        return Objects.hash(
+                transactionId, customerName, customerId, productName, quantitySold, unitPrice, transactionDate);
     }
 }

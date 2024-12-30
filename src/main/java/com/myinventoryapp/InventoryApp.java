@@ -1,6 +1,6 @@
 package com.myinventoryapp;
 
-import com.myinventoryapp.inventoryimplementation.*;
+import com.myinventoryapp.ui.menu.*;
 import com.myinventoryapp.util.Colors;
 import com.myinventoryapp.util.ErrorHandler;
 import com.myinventoryapp.dataio.DataLoader;
@@ -12,6 +12,9 @@ public class InventoryApp {
     private MenuOption4DisplayCustomers menuOption4DisplayCustomers;
     private MenuOption5DisplayTransactions menuOption5DisplayTransactions;
     private MenuOption6SaveData menuOption6SaveData;
+
+    public InventoryApp() {
+    }
 
     public InventoryApp(
             MenuOption1Sell menuOption1Sell,
@@ -26,9 +29,6 @@ public class InventoryApp {
         this.menuOption4DisplayCustomers = menuOption4DisplayCustomers;
         this.menuOption5DisplayTransactions = menuOption5DisplayTransactions;
         this.menuOption6SaveData = menuOption6SaveData;
-    }
-
-    public InventoryApp() {
     }
 
     public static void main(String[] args) {
@@ -57,8 +57,9 @@ public class InventoryApp {
                             "4. Display Customers\n" +
                             "5. Display Transactions\n" +
                             "6. Save and Exit\n");
-            if (userChoice < 1 || userChoice > 6)
+            if (userChoice < 1 || userChoice > 6) {
                 System.out.println("You can choose from 1 to 6!");
+            }
         } while (userChoice < 1 || userChoice > 6);
         return userChoice;
     }
@@ -83,6 +84,8 @@ public class InventoryApp {
             case 6:
                 menuOption6SaveData.saveData();
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid menu choice: " + userChoice);
         }
         if (userChoice != 6) {
             int userChoiceAgain = menuSelection("\n-MAIN MENU-\n");
@@ -92,7 +95,8 @@ public class InventoryApp {
 
     private String getWelcomeMessage() {
         return "\n\nWelcome to the inventory system!" +
-                Colors.GREEN_UNDERLINED.getColorCode() + "\n\nYou can choose from the following menu items:" + Colors.RESET.getColorCode();
+                Colors.GREEN_UNDERLINED.getColorCode() + "\n\nYou can choose from the following menu items:" +
+                Colors.RESET.getColorCode();
     }
 
     void setMenuOption1Sell(MenuOption1Sell menuOption1Sell) {
@@ -106,6 +110,7 @@ public class InventoryApp {
     void setMenuOption3DisplayProducts(MenuOption3DisplayProducts menuOption3DisplayProducts) {
         this.menuOption3DisplayProducts = menuOption3DisplayProducts;
     }
+
 
     void setMenuOption4DisplayCustomers(MenuOption4DisplayCustomers menuOption4DisplayCustomers) {
         this.menuOption4DisplayCustomers = menuOption4DisplayCustomers;

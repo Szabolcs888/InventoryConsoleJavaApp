@@ -12,7 +12,7 @@ import static org.mockito.Mockito.times;
 class DataSaverTest {
 
     @Test
-    void testSaveAllDataCallsGetters() {
+    void testSaveAllData_CallsGetters() {
         try (MockedStatic<FilePaths> mockedFilePaths = Mockito.mockStatic(FilePaths.class)) {
             mockedFilePaths.when(FilePaths::getProductsFilePath)
                     .thenReturn(TestFilePaths.getTestProductsFilePath());

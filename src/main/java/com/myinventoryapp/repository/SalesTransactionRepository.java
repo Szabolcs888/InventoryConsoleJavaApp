@@ -1,6 +1,6 @@
-package com.myinventoryapp.datastorage;
+package com.myinventoryapp.repository;
 
-import com.myinventoryapp.inventoryentities.SalesTransaction;
+import com.myinventoryapp.entities.SalesTransaction;
 
 import java.util.ArrayList;
 import java.util.List;

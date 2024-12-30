@@ -10,7 +10,8 @@ public class ErrorHandler {
                 validNumber = Integer.parseInt(UserInputUtils.readFromUser(text));
                 isNumberValid = true;
             } catch (NumberFormatException e) {
-                System.out.println(Colors.RED.getColorCode() + "Please enter a valid number!" + Colors.RESET.getColorCode());
+                System.out.println(
+                        Colors.RED.getColorCode() + "Please enter a valid number!" + Colors.RESET.getColorCode());
                 isNumberValid = false;
             }
         } while (!isNumberValid);
@@ -21,10 +22,11 @@ public class ErrorHandler {
         String yesOrNoAnswer;
         do {
             yesOrNoAnswer = UserInputUtils.readFromUser("\n" + question);
-            if (!yesOrNoAnswer.equalsIgnoreCase("Y") && !yesOrNoAnswer.equalsIgnoreCase("N")) {
-                System.out.println(Colors.RED.getColorCode() + "Please enter \"YES\" or \"NO\"!" + Colors.RESET.getColorCode());
+            if (!"Y".equalsIgnoreCase(yesOrNoAnswer) && !"N".equalsIgnoreCase(yesOrNoAnswer)) {
+                System.out.println(
+                        Colors.RED.getColorCode() + "Please enter \"YES\" or \"NO\"!" + Colors.RESET.getColorCode());
             }
-        } while (!yesOrNoAnswer.equalsIgnoreCase("Y") && !yesOrNoAnswer.equalsIgnoreCase("N"));
+        } while (!"Y".equalsIgnoreCase(yesOrNoAnswer) && !"N".equalsIgnoreCase(yesOrNoAnswer));
         return yesOrNoAnswer;
     }
 
@@ -32,40 +34,47 @@ public class ErrorHandler {
         String yesOrNoOrDeleteAnswer;
         do {
             yesOrNoOrDeleteAnswer = UserInputUtils.readFromUser("\n" + question);
-            if (!yesOrNoOrDeleteAnswer.equalsIgnoreCase("Y") &&
-                    !yesOrNoOrDeleteAnswer.equalsIgnoreCase("N") &&
-                    !yesOrNoOrDeleteAnswer.equalsIgnoreCase("D")) {
-                System.out.println(Colors.RED.getColorCode() + "Please enter \"YES\", \"NO\", or \"DELETE\"!" + Colors.RESET.getColorCode());
+            if (!"Y".equalsIgnoreCase(yesOrNoOrDeleteAnswer) &&
+                    !"N".equalsIgnoreCase(yesOrNoOrDeleteAnswer) &&
+                    !"D".equalsIgnoreCase(yesOrNoOrDeleteAnswer)) {
+                System.out.println(
+                        Colors.RED.getColorCode() + "Please enter \"YES\", \"NO\", or \"DELETE\"!" + Colors.RESET.getColorCode());
             }
-        } while (!yesOrNoOrDeleteAnswer.equalsIgnoreCase("Y") &&
-                !yesOrNoOrDeleteAnswer.equalsIgnoreCase("N") &&
-                !yesOrNoOrDeleteAnswer.equalsIgnoreCase("D"));
+        } while (!"Y".equalsIgnoreCase(yesOrNoOrDeleteAnswer) &&
+                !"N".equalsIgnoreCase(yesOrNoOrDeleteAnswer) &&
+                !"D".equalsIgnoreCase(yesOrNoOrDeleteAnswer));
         return yesOrNoOrDeleteAnswer;
     }
 
     public static void validateName(String name) {
         if (name.length() < 3) {
-            System.out.println(Colors.RED.getColorCode() + "The name must be at least 3 characters long!\n" + Colors.RESET.getColorCode());
+            System.out.println(
+                    Colors.RED.getColorCode() + "The name must be at least 3 characters long!\n" + Colors.RESET.getColorCode());
         }
-        if (name.contains(","))
-            System.out.println(Colors.RED.getColorCode() + "The name cannot contain a \",\" character!\n" + Colors.RESET.getColorCode());
+        if (name.contains(",")) {
+            System.out.println(
+                    Colors.RED.getColorCode() + "The name cannot contain a \",\" character!\n" + Colors.RESET.getColorCode());
+        }
     }
 
     public static void validateQuantity(int quantity) {
         if (quantity < 1) {
-            System.out.println(Colors.RED.getColorCode() + "\nThe product quantity must be at least 1!" + Colors.RESET.getColorCode());
+            System.out.println(
+                    Colors.RED.getColorCode() + "\nThe product quantity must be at least 1!" + Colors.RESET.getColorCode());
         }
     }
 
     public static void validateNonNegativeQuantity(int quantity) {
         if (quantity < 0) {
-            System.out.println(Colors.RED.getColorCode() + "\nThe quantity of a product cannot be less than 0!" + Colors.RESET.getColorCode());
+            System.out.println(
+                    Colors.RED.getColorCode() + "\nThe quantity of a product cannot be less than 0!" + Colors.RESET.getColorCode());
         }
     }
 
     public static void validatePrice(int unitPrice) {
         if (unitPrice < 0) {
-            System.out.println(Colors.RED.getColorCode() + "The product value cannot be a negative amount!" + Colors.RESET.getColorCode());
+            System.out.println(
+                    Colors.RED.getColorCode() + "The product value cannot be a negative amount!" + Colors.RESET.getColorCode());
         }
     }
 }

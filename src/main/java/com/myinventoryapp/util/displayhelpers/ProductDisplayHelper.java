@@ -1,8 +1,8 @@
 package com.myinventoryapp.util.displayhelpers;
 
-import com.myinventoryapp.inventoryentities.Product;
+import com.myinventoryapp.entities.Product;
 import com.myinventoryapp.util.Colors;
-import com.myinventoryapp.datastorage.ProductRepository;
+import com.myinventoryapp.repository.ProductRepository;
 
 import java.util.List;
 
@@ -15,15 +15,16 @@ public class ProductDisplayHelper {
         } else {
             System.out.println(Colors.GREEN.getColorCode() + "There are a total of " + productList.size() +
                     " items in the inventory:" + Colors.RESET.getColorCode());
-            for (Product item : productList) {
-                System.out.println("Name: " + item.getProductName() + ", Price: " + item.getUnitPrice() +
-                        " HUF, Quantity: " + item.getQuantity() + ", Product ID: " + item.getProductId());
+            for (Product product : productList) {
+                System.out.println("Name: " + product.getProductName() + ", Price: " + product.getUnitPrice() +
+                        " HUF, Quantity: " + product.getQuantity() + ", Product ID: " + product.getProductId());
             }
         }
         System.out.println();
     }
 
-    private static void displayProductInfo(String text, String productName, String productId, int unitPrice, int quantity) {
+    private static void displayProductInfo(
+            String text, String productName, String productId, int unitPrice, int quantity) {
         System.out.println(Colors.GREEN.getColorCode() + "\n" + text + Colors.RESET.getColorCode());
         System.out.println("Product name: " + productName +
                 ", Product ID: " + productId +
@@ -32,30 +33,33 @@ public class ProductDisplayHelper {
     }
 
     public static void displayProductInfoAfterGoodsReceipt(Product newProduct) {
-        System.out.println(Colors.GREEN.getColorCode() + "\nTHE PRODUCT HAS BEEN ADDED TO THE INVENTORY:" + Colors.RESET.getColorCode());
+        System.out.println(Colors.GREEN.getColorCode() +
+                "\nTHE PRODUCT HAS BEEN ADDED TO THE INVENTORY:" + Colors.RESET.getColorCode());
         System.out.println("Product name: " + newProduct.getProductName() +
                 "\nProduct ID: " + newProduct.getProductId() +
                 "\nUnit price: " + newProduct.getUnitPrice() + " HUF" +
                 "\nAvailable quantity: " + newProduct.getQuantity());
     }
 
-    public static void displayProductNotFoundMessage(String productName, List<Product> productList) {
+    public static void displayProductNotFoundMessage(String productName) {
         System.out.print(Colors.RED.getColorCode() + "\nThe product named \"" + productName +
                 "\" is not in the inventory, please choose another product:" + Colors.RESET.getColorCode() + " ");
-        for (Product item : productList) {
-            System.out.print(item.getProductName() + ", ");
+        for (Product product : ProductRepository.getProductList()) {
+            System.out.print(product.getProductName() + ", ");
         }
         System.out.println();
     }
 
-    public static void displayProductQuantityErrorMessage(int productIndex, String productName, int availableQuantity, int quantitySold) {
+    public static void displayProductQuantityErrorMessage(Product product, int availableQuantity, int quantitySold) {
         if (availableQuantity - quantitySold < 0) {
-            System.out.println(Colors.RED.getColorCode() + "\nThere are a total of " +
-                    ProductRepository.getProductList().get(productIndex).getQuantity() + " " +
-                    productName + " in stock, you cannot sell more than that!" + Colors.RESET.getColorCode());
+            System.out.println(Colors.RED.getColorCode() + "\nThere are a total of " + product.getQuantity() + " " +
+                    product.getProductName() + " in stock, you cannot sell more than that!" +
+                    Colors.RESET.getColorCode());
         }
-        if (quantitySold < 1)
-            System.out.println(Colors.RED.getColorCode() + "\nThe quantity sold must be at least 1!" + Colors.RESET.getColorCode());
+        if (quantitySold < 1) {
+            System.out.println(
+                    Colors.RED.getColorCode() + "\nThe quantity sold must be at least 1!" + Colors.RESET.getColorCode());
+        }
     }
 
     public static void displayProductInfoIfProductFound(Product product) {
@@ -63,17 +67,14 @@ public class ProductDisplayHelper {
                 product.getProductName(), product.getProductId(), product.getUnitPrice(), product.getQuantity());
     }
 
-    public static void displayProductInfoAfterSellAndUpdateGoodsReceipt(int productIndex, String text) {
-        displayProductInfo(text,
-                ProductRepository.getProductList().get(productIndex).getProductName(),
-                ProductRepository.getProductList().get(productIndex).getProductId(),
-                ProductRepository.getProductList().get(productIndex).getUnitPrice(),
-                ProductRepository.getProductList().get(productIndex).getQuantity());
+    public static void displayProductInfoAfterSellAndUpdateGoodsReceipt(Product product, String text) {
+        displayProductInfo(
+                text, product.getProductName(), product.getProductId(), product.getUnitPrice(), product.getQuantity());
     }
 
-    public static void displayExistingProductInfo(Product product, String inputProductName) {
-        displayProductInfo("THE PRODUCT NAMED " + inputProductName + " IS ALREADY IN THE INVENTORY. DETAILS:",
-                inputProductName, product.getProductId(), product.getUnitPrice(), product.getQuantity());
+    public static void displayExistingProductInfo(Product product) {
+        displayProductInfo("THE PRODUCT NAMED " + product.getProductName() + " IS ALREADY IN THE INVENTORY. DETAILS:",
+                product.getProductName(), product.getProductId(), product.getUnitPrice(), product.getQuantity());
     }
 
     public static void displayOutOfStockMessage() {
@@ -85,4 +86,3 @@ public class ProductDisplayHelper {
         System.out.println("There are currently no products available for sale!\n");
     }
 }
-

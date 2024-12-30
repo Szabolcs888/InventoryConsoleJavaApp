@@ -1,4 +1,4 @@
-package com.myinventoryapp.inventoryentities;
+package com.myinventoryapp.entities;
 
 import java.util.Objects;
 
@@ -13,9 +13,6 @@ public class Customer {
         this.totalPurchases = totalPurchases;
     }
 
-    public Customer() {
-    }
-
     public String getCustomerName() {
         return customerName;
     }
@@ -28,22 +25,18 @@ public class Customer {
         return totalPurchases;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
     public void setTotalPurchases(int totalPurchases) {
         this.totalPurchases = totalPurchases;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Customer customer = (Customer) o;
         return totalPurchases == customer.totalPurchases &&
                 Objects.equals(customerName, customer.customerName) &&

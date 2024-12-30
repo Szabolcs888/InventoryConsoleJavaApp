@@ -1,8 +1,8 @@
 package com.myinventoryapp.util.testutils;
 
-import com.myinventoryapp.datastorage.CustomerRepository;
-import com.myinventoryapp.datastorage.ProductRepository;
-import com.myinventoryapp.datastorage.SalesTransactionRepository;
+import com.myinventoryapp.repository.CustomerRepository;
+import com.myinventoryapp.repository.ProductRepository;
+import com.myinventoryapp.repository.SalesTransactionRepository;
 
 public class TestUtils {
 

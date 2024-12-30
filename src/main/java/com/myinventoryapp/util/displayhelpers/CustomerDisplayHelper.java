@@ -1,7 +1,7 @@
 package com.myinventoryapp.util.displayhelpers;
 
-import com.myinventoryapp.datastorage.CustomerRepository;
-import com.myinventoryapp.inventoryentities.Customer;
+import com.myinventoryapp.repository.CustomerRepository;
+import com.myinventoryapp.entities.Customer;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class CustomerDisplayHelper {
         } else {
             System.out.println(GREEN.getColorCode() + "There are a total of " + CustomerRepository.getCustomerList().size() +
                     " registered customers in the inventory:" + RESET.getColorCode());
-            for (Customer item : customerList) {
-                System.out.println("Name: " + item.getCustomerName() + " (" + item.getCustomerId() +
-                        "), Total purchases: " + item.getTotalPurchases() + " HUF");
+            for (Customer customer : customerList) {
+                System.out.println("Name: " + customer.getCustomerName() + " (" + customer.getCustomerId() +
+                        "), Total purchases: " + customer.getTotalPurchases() + " HUF");
             }
         }
         System.out.println();

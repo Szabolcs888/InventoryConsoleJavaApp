@@ -1,7 +1,7 @@
-package com.myinventoryapp.inventoryimplementation;
+package com.myinventoryapp.ui.menu;
 
-import com.myinventoryapp.datastorage.SalesTransactionRepository;
-import com.myinventoryapp.inventoryentities.SalesTransaction;
+import com.myinventoryapp.repository.SalesTransactionRepository;
+import com.myinventoryapp.entities.SalesTransaction;
 import com.myinventoryapp.util.displayhelpers.TransactionDisplayHelper;
 
 import java.util.List;

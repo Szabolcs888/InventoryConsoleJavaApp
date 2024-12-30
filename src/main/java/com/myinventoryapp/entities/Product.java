@@ -1,4 +1,4 @@
-package com.myinventoryapp.inventoryentities;
+package com.myinventoryapp.entities;
 
 import java.util.Objects;
 
@@ -13,9 +13,6 @@ public class Product {
         this.productId = productId;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-    }
-
-    public Product() {
     }
 
     public String getProductName() {
@@ -34,26 +31,18 @@ public class Product {
         return quantity;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public void setUnitPrice(int unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Product product = (Product) o;
         return unitPrice == product.unitPrice &&
                 quantity == product.quantity &&

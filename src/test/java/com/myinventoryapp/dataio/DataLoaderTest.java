@@ -1,11 +1,11 @@
 package com.myinventoryapp.dataio;
 
-import com.myinventoryapp.datastorage.CustomerRepository;
-import com.myinventoryapp.datastorage.ProductRepository;
-import com.myinventoryapp.datastorage.SalesTransactionRepository;
-import com.myinventoryapp.inventoryentities.Customer;
-import com.myinventoryapp.inventoryentities.Product;
-import com.myinventoryapp.inventoryentities.SalesTransaction;
+import com.myinventoryapp.repository.CustomerRepository;
+import com.myinventoryapp.repository.ProductRepository;
+import com.myinventoryapp.repository.SalesTransactionRepository;
+import com.myinventoryapp.entities.Customer;
+import com.myinventoryapp.entities.Product;
+import com.myinventoryapp.entities.SalesTransaction;
 import com.myinventoryapp.util.FileUtils;
 import com.myinventoryapp.util.testutils.TestFilePaths;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 class DataLoaderTest {
 
     @Test
-    void testLoadAllDataCallsGetters() {
+    void testLoadAllData_CallsGetters() {
         try (MockedStatic<FilePaths> mockedFilePaths = Mockito.mockStatic(FilePaths.class)) {
             mockedFilePaths.when(FilePaths::getProductsFilePath)
                     .thenReturn(TestFilePaths.getTestProductsFilePath());
@@ -48,7 +48,7 @@ class DataLoaderTest {
     }
 
     @Test
-    void testLoadAllDataCallsFileLoaders() {
+    void testLoadAllData_CallsFileLoaders() {
         DataLoader dataLoader = spy(new DataLoader());
         doNothing().when(dataLoader).loadProductsFromFile(anyString());
         doNothing().when(dataLoader).loadCustomersFromFile(anyString());
@@ -56,7 +56,7 @@ class DataLoaderTest {
 
         dataLoader.loadAllData();
 
-        // Assert: Verify that the load methods are called with the correct arguments
+        // Verify that the load methods are called with the correct arguments
         verify(dataLoader, times(1)).loadProductsFromFile(
                 "src/main/resources/inventorydata/productList.txt");
         verify(dataLoader, times(1)).loadCustomersFromFile(
@@ -67,7 +67,7 @@ class DataLoaderTest {
 
 
     @Test
-    void testLoadProductsFromFilePrintsMessage() {
+    void testLoadProductsFromFile_PrintsMessage() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
@@ -145,7 +145,7 @@ class DataLoaderTest {
 
 
     @Test
-    void testLoadCustomersFromFilePrintsMessage() {
+    void testLoadCustomersFromFile_PrintsMessage() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
@@ -222,7 +222,7 @@ class DataLoaderTest {
     }
 
     @Test
-    void testTransactionsFromFilePrintsMessage() {
+    void testTransactionsFromFile_PrintsMessage() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
@@ -302,4 +302,3 @@ class DataLoaderTest {
         }
     }
 }
-
