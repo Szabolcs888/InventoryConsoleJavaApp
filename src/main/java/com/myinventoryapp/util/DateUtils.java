@@ -3,7 +3,11 @@ package com.myinventoryapp.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DateUtils {
+public final class DateUtils {
+
+    private DateUtils() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     public static String getCurrentFormattedDate() {
         LocalDateTime nowDateTime = LocalDateTime.now();

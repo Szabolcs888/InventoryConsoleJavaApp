@@ -2,7 +2,11 @@ package com.myinventoryapp.util;
 
 import java.util.Scanner;
 
-public class UserInputUtils {
+public final class UserInputUtils {
+
+    private UserInputUtils() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     public static String readFromUser(String question) {
         Scanner scanner = new Scanner(System.in);

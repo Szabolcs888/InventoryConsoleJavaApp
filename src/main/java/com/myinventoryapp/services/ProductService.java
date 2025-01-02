@@ -17,11 +17,12 @@ public class ProductService {
     }
 
     public void deleteProduct(Product product) {
+        String yesOption = "Y";
         String productNameForDeletion = product.getProductName();
         String deleteConfirmation = ErrorHandler.getYesOrNoAnswer(
                 Colors.RED.getColorCode() + "Are you sure you want to DELETE the product named " +
                         productNameForDeletion + " from the inventory? (Y/N)" + Colors.RESET.getColorCode());
-        if ("Y".equalsIgnoreCase(deleteConfirmation)) {
+        if (yesOption.equalsIgnoreCase(deleteConfirmation)) {
             ProductRepository.deleteProduct(product);
             System.out.println("\nThe item has been deleted!");
         }

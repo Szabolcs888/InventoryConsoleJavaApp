@@ -7,7 +7,11 @@ import java.util.List;
 
 import static com.myinventoryapp.util.Colors.*;
 
-public class CustomerDisplayHelper {
+public final class CustomerDisplayHelper {
+
+    private CustomerDisplayHelper() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     public static void displayCustomerList(List<Customer> customerList, String text) {
         System.out.println(text);

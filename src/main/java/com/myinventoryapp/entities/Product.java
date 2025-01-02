@@ -3,9 +3,9 @@ package com.myinventoryapp.entities;
 import java.util.Objects;
 
 public class Product {
-    private String productName;
-    private String productId;
-    private int unitPrice;
+    private final String productName;
+    private final String productId;
+    private final int unitPrice;
     private int quantity;
 
     public Product(String productName, String productId, int unitPrice, int quantity) {

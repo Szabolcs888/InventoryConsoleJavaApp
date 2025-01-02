@@ -6,7 +6,11 @@ import com.myinventoryapp.repository.ProductRepository;
 
 import java.util.List;
 
-public class ProductDisplayHelper {
+public final class ProductDisplayHelper {
+
+    private ProductDisplayHelper() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     public static void displayProductList(List<Product> productList, String text) {
         System.out.println(text);
@@ -51,12 +55,14 @@ public class ProductDisplayHelper {
     }
 
     public static void displayProductQuantityErrorMessage(Product product, int availableQuantity, int quantitySold) {
-        if (availableQuantity - quantitySold < 0) {
+        int zeroValue = 0;
+        int minQuantityValue = 1;
+        if (availableQuantity - quantitySold < zeroValue) {
             System.out.println(Colors.RED.getColorCode() + "\nThere are a total of " + product.getQuantity() + " " +
                     product.getProductName() + " in stock, you cannot sell more than that!" +
                     Colors.RESET.getColorCode());
         }
-        if (quantitySold < 1) {
+        if (quantitySold < minQuantityValue) {
             System.out.println(
                     Colors.RED.getColorCode() + "\nThe quantity sold must be at least 1!" + Colors.RESET.getColorCode());
         }

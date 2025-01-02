@@ -7,6 +7,8 @@ import com.myinventoryapp.util.displayhelpers.ProductDisplayHelper;
 import com.myinventoryapp.repository.ProductRepository;
 
 public class MenuOption2GoodsReceipt {
+    private static final String YES_OPTION = "Y";
+    private static final String DELETE_OPTION = "D";
 
     public void goodsReceipt(String text) {
         System.out.println(text);
@@ -14,15 +16,15 @@ public class MenuOption2GoodsReceipt {
         String askAddOrModifyProduct;
         do {
             inputProductName = getProductName();
-            if (!isProductInList(inputProductName)) {
-                handleNewProductAddition(inputProductName);
-            } else {
+            if (isProductInList(inputProductName)) {
                 handleProductIfInList(inputProductName);
+            } else {
+                handleNewProductAddition(inputProductName);
             }
             askAddOrModifyProduct = ErrorHandler.getYesOrNoAnswer(
                     "Would you like to add a new product or modify the quantity of an existing one? (Y/N)");
             System.out.println();
-        } while ("Y".equalsIgnoreCase(askAddOrModifyProduct));
+        } while (YES_OPTION.equalsIgnoreCase(askAddOrModifyProduct));
     }
 
     private String getProductName() {
@@ -77,9 +79,9 @@ public class MenuOption2GoodsReceipt {
         String askAddOrRemoveProduct = ErrorHandler.getYesOrNoOrDeleteAnswer(
                 "Would you like to add to or subtract from the product quantity? (Y/N) " +
                         "To delete from the inventory, press \"D\"!");
-        if ("Y".equalsIgnoreCase(askAddOrRemoveProduct)) {
+        if (YES_OPTION.equalsIgnoreCase(askAddOrRemoveProduct)) {
             askAndUpdateProductQuantity(product);
-        } else if ("D".equalsIgnoreCase(askAddOrRemoveProduct)) {
+        } else if (DELETE_OPTION.equalsIgnoreCase(askAddOrRemoveProduct)) {
             ProductService productService = new ProductService();
             productService.deleteProduct(product);
         }
@@ -92,6 +94,6 @@ public class MenuOption2GoodsReceipt {
             productService.updateProductQuantity(product);
             modifyProductAnswerAgain = ErrorHandler.getYesOrNoAnswer(
                     "Would you like to modify the " + product.getProductName() + " quantity further? (Y/N)");
-        } while ("Y".equalsIgnoreCase(modifyProductAnswerAgain));
+        } while (YES_OPTION.equalsIgnoreCase(modifyProductAnswerAgain));
     }
 }

@@ -11,13 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class IdUtils {
-    private static final Random RANDOM = new Random();
+public final class IdUtils {
+
+    private IdUtils() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     public static int generateId() {
+        Random random = new Random();
         int id;
         do {
-            id = RANDOM.nextInt(1_000_000, 9_999_999) + 1;
+            id = random.nextInt(1_000_000, 9_999_999) + 1;
         } while (isIdExisting(id));
         return id;
     }

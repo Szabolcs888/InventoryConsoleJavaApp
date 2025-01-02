@@ -5,8 +5,16 @@ import com.myinventoryapp.entities.SalesTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalesTransactionRepository {
-    private static List<SalesTransaction> transactionList = new ArrayList<>();
+public final class SalesTransactionRepository {
+    private static final List<SalesTransaction> transactionList = new ArrayList<>();
+
+    private SalesTransactionRepository() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
+    public static List<SalesTransaction> getSalesTransactionList() {
+        return new ArrayList<>(transactionList);
+    }
 
     public static void addSalesTransaction(SalesTransaction salesTransaction) {
         transactionList.add(salesTransaction);
@@ -14,9 +22,5 @@ public class SalesTransactionRepository {
 
     public static void clearSalesTransactionList() {
         transactionList.clear();
-    }
-
-    public static List<SalesTransaction> getSalesTransactionList() {
-        return transactionList;
     }
 }

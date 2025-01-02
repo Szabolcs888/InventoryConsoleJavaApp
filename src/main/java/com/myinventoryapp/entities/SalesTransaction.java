@@ -3,13 +3,13 @@ package com.myinventoryapp.entities;
 import java.util.Objects;
 
 public class SalesTransaction {
-    private String transactionId;
-    private String customerName;
-    private String customerId;
-    private String productName;
-    private int quantitySold;
-    private int unitPrice;
-    private String transactionDate;
+    private final String transactionId;
+    private final String customerName;
+    private final String customerId;
+    private final String productName;
+    private final int quantitySold;
+    private final int unitPrice;
+    private final String transactionDate;
 
     public SalesTransaction(
             String transactionId, String customerName, String customerId, String productName,

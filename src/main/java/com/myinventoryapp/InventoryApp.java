@@ -4,6 +4,7 @@ import com.myinventoryapp.ui.menu.*;
 import com.myinventoryapp.util.Colors;
 import com.myinventoryapp.util.ErrorHandler;
 import com.myinventoryapp.dataio.DataLoader;
+import com.myinventoryapp.util.MenuOption;
 
 public class InventoryApp {
     private MenuOption1Sell menuOption1Sell;
@@ -65,29 +66,30 @@ public class InventoryApp {
     }
 
     void transactionSelector(int userChoice) {
-        switch (userChoice) {
-            case 1:
+        MenuOption menuOption = MenuOption.fromValue(userChoice);
+        switch (menuOption) {
+            case SELL_PRODUCT:
                 menuOption1Sell.sellProduct("\n-SELL PRODUCT MENU-\n");
                 break;
-            case 2:
+            case RECEIVE_PRODUCT:
                 menuOption2GoodsReceipt.goodsReceipt("\n-RECEIVE PRODUCT MENU-\n");
                 break;
-            case 3:
+            case DISPLAY_AVAILABLE_PRODUCTS:
                 menuOption3DisplayProducts.displayProductList("\n-DISPLAY AVAILABLE PRODUCTS MENU-\n");
                 break;
-            case 4:
+            case DISPLAY_CUSTOMERS:
                 menuOption4DisplayCustomers.displayCustomerList("\n-DISPLAY CUSTOMERS MENU-\n");
                 break;
-            case 5:
+            case DISPLAY_TRANSACTIONS:
                 menuOption5DisplayTransactions.displayTransactionList("\n-DISPLAY TRANSACTIONS MENU-\n");
                 break;
-            case 6:
+            case SAVE_AND_EXIT:
                 menuOption6SaveData.saveData();
                 break;
             default:
                 throw new IllegalArgumentException("Invalid menu choice: " + userChoice);
         }
-        if (userChoice != 6) {
+        if (menuOption != MenuOption.SAVE_AND_EXIT) {
             int userChoiceAgain = menuSelection("\n-MAIN MENU-\n");
             transactionSelector(userChoiceAgain);
         }

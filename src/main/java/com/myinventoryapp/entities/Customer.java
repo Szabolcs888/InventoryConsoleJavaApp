@@ -3,8 +3,8 @@ package com.myinventoryapp.entities;
 import java.util.Objects;
 
 public class Customer {
-    private String customerName;
-    private String customerId;
+    private final String customerName;
+    private final String customerId;
     private int totalPurchases;
 
     public Customer(String customerName, String customerId, int totalPurchases) {

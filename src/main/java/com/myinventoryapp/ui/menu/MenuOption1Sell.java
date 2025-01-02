@@ -15,6 +15,7 @@ public class MenuOption1Sell {
     public void sellProduct(String text) {
         System.out.println(text);
         String askAnotherSell;
+        String yesOption = "Y";
         do {
             if (ProductRepository.getProductList().isEmpty()) {
                 ProductDisplayHelper.displayNoProductsAvailableMessage();
@@ -24,7 +25,7 @@ public class MenuOption1Sell {
                 askAnotherSell = ErrorHandler.getYesOrNoAnswer("Would you like to register another sale? (Y/N)");
                 System.out.println();
             }
-        } while ("Y".equalsIgnoreCase(askAnotherSell));
+        } while (yesOption.equalsIgnoreCase(askAnotherSell));
     }
 
     private void processSale() {

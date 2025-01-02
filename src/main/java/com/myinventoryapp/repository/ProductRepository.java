@@ -5,11 +5,15 @@ import com.myinventoryapp.entities.Product;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductRepository {
-    private static List<Product> productList = new ArrayList<>();
+public final class ProductRepository {
+    private static final List<Product> productList = new ArrayList<>();
+
+    private ProductRepository() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
     public static List<Product> getProductList() {
-        return productList;
+        return new ArrayList<>(productList);
     }
 
     public static void addProduct(Product product) {

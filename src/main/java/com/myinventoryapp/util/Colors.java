@@ -6,7 +6,7 @@ public enum Colors {
     GREEN("\033[0;32m"),
     GREEN_UNDERLINED("\033[4;32m");
 
-    private String ansiCode;
+    private final String ansiCode;
 
     Colors(String ansiCode) {
         this.ansiCode = ansiCode;

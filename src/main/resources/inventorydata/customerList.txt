@@ -17,7 +17,7 @@ Töröcsik András,560,cID2422151
 Egerszegi Krisztina,1356,cID5794138
 Darnyi Tamás,560,cID9742746
 Thomas Mann,5400,cID2633111
-Mikhail Bulgakov,3600,cID3099022
+Mikhail Bulgakov,6360,cID3099022
 Freddie Mercury,2640,cID6925498
 Kóbór János,5400,cID8259712
 Kodály Zoltán,2160,cID6401082
