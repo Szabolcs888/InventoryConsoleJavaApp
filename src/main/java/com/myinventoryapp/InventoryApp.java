@@ -47,8 +47,8 @@ public class InventoryApp {
         app.transactionSelector(userChoice);
     }
 
-    int menuSelection(String text) {
-        System.out.print(text);
+    int menuSelection(String welcomeMessage) {
+        System.out.print(welcomeMessage);
         int userChoice;
         do {
             userChoice = ErrorHandler.getValidNumber(

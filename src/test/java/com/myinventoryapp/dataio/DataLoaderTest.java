@@ -8,12 +8,12 @@ import com.myinventoryapp.entities.Product;
 import com.myinventoryapp.entities.SalesTransaction;
 import com.myinventoryapp.util.FileUtils;
 import com.myinventoryapp.util.testutils.TestFilePaths;
+import com.myinventoryapp.util.testutils.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 class DataLoaderTest {
 
     @Test
-    void testLoadAllData_CallsGetters() {
+    void testLoadAllData_InvokesFilePathsGetters() {
         try (MockedStatic<FilePaths> mockedFilePaths = Mockito.mockStatic(FilePaths.class)) {
             mockedFilePaths.when(FilePaths::getProductsFilePath)
                     .thenReturn(TestFilePaths.getTestProductsFilePath());
@@ -48,28 +48,35 @@ class DataLoaderTest {
     }
 
     @Test
-    void testLoadAllData_CallsFileLoaders() {
-        DataLoader dataLoader = spy(new DataLoader());
-        doNothing().when(dataLoader).loadProductsFromFile(anyString());
-        doNothing().when(dataLoader).loadCustomersFromFile(anyString());
-        doNothing().when(dataLoader).loadTransactionsFromFile(anyString());
+    void testLoadAllData_CallsEachLoaderWithExpectedPaths() {
+        try (MockedStatic<FilePaths> mockedFilePaths = Mockito.mockStatic(FilePaths.class)) {
+            mockedFilePaths.when(FilePaths::getProductsFilePath)
+                    .thenReturn(TestFilePaths.getTestProductsFilePath());
+            mockedFilePaths.when(FilePaths::getCustomersFilePath)
+                    .thenReturn(TestFilePaths.getTestCustomersFilePath());
+            mockedFilePaths.when(FilePaths::getTransactionsFilePath)
+                    .thenReturn(TestFilePaths.getTestTransactionsFilePath());
 
-        dataLoader.loadAllData();
+            DataLoader dataLoader = spy(new DataLoader());
+            doNothing().when(dataLoader).loadProductsFromFile(anyString());
+            doNothing().when(dataLoader).loadCustomersFromFile(anyString());
+            doNothing().when(dataLoader).loadTransactionsFromFile(anyString());
 
-        // Verify that the load methods are called with the correct arguments
-        verify(dataLoader, times(1)).loadProductsFromFile(
-                "src/main/resources/inventorydata/productList.txt");
-        verify(dataLoader, times(1)).loadCustomersFromFile(
-                "src/main/resources/inventorydata/customerList.txt");
-        verify(dataLoader, times(1)).loadTransactionsFromFile(
-                "src/main/resources/inventorydata/transactionList.txt");
+            dataLoader.loadAllData();
+
+            // Verify that the load methods are called with the correct arguments
+            verify(dataLoader, times(1)).loadProductsFromFile(
+                    TestFilePaths.getTestProductsFilePath());
+            verify(dataLoader, times(1)).loadCustomersFromFile(
+                    TestFilePaths.getTestCustomersFilePath());
+            verify(dataLoader, times(1)).loadTransactionsFromFile(
+                    TestFilePaths.getTestTransactionsFilePath());
+        }
     }
-
 
     @Test
     void testLoadProductsFromFile_PrintsMessage() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
@@ -84,14 +91,13 @@ class DataLoaderTest {
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
         }
     }
 
     @Test
     void testLoadProductsFromFile_ReadFromFileCalled() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        TestUtils.redirectSystemOut();
 
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
@@ -105,15 +111,14 @@ class DataLoaderTest {
 
             mockedFileUtils.verify(() -> FileUtils.readFromFile(testProductsFilePath), times(1));
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
         }
     }
 
     @Test
     void testLoadProductsFromFile_DataAddedToProductRepository() {
         ProductRepository.clearProductList();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        TestUtils.redirectSystemOut();
 
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
         List<String> testFileData = Arrays.asList(
@@ -138,7 +143,7 @@ class DataLoaderTest {
             mockedProductRepository.verify(() -> ProductRepository.addProduct(new Product(
                     "lemon", "pr6634365", 880, 43)), times(1));
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
             ProductRepository.clearProductList();
         }
     }
@@ -146,8 +151,7 @@ class DataLoaderTest {
 
     @Test
     void testLoadCustomersFromFile_PrintsMessage() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
@@ -162,14 +166,13 @@ class DataLoaderTest {
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
         }
     }
 
     @Test
     void testLoadCustomersFromFile_ReadFromFileCalled() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        TestUtils.redirectSystemOut();
 
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
@@ -183,15 +186,14 @@ class DataLoaderTest {
 
             mockedFileUtils.verify(() -> FileUtils.readFromFile(testCustomersFilePath), times(1));
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
         }
     }
 
     @Test
     void testLoadCustomersFromFile_DataAddedToCustomerRepository() {
         CustomerRepository.clearCustomerList();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        TestUtils.redirectSystemOut();
 
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
         List<String> testFileData = Arrays.asList(
@@ -216,15 +218,14 @@ class DataLoaderTest {
             mockedCustomerRepository.verify(() -> CustomerRepository.addCustomer(new Customer(
                     "Nagy Anna", "cID5916556", 2160)), times(1));
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
             CustomerRepository.clearCustomerList();
         }
     }
 
     @Test
     void testTransactionsFromFile_PrintsMessage() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
@@ -239,14 +240,13 @@ class DataLoaderTest {
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
         }
     }
 
     @Test
     void testLoadTransactionsFromFile_ReadFromFileCalled() {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
@@ -260,15 +260,14 @@ class DataLoaderTest {
 
             mockedFileUtils.verify(() -> FileUtils.readFromFile(testTransactionsFilePath), times(1));
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
         }
     }
 
     @Test
     void testLoadTransactionsFromFile_DataAddedToTransactionsRepository() {
         SalesTransactionRepository.clearSalesTransactionList();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
         List<String> testFileData = Arrays.asList(
@@ -297,7 +296,7 @@ class DataLoaderTest {
                     "trId4844949", "Egerszegi Krisztina", "cID5794138", "cherry",
                     3, 452, "2024.11.03. 23:42:05")), times(1));
         } finally {
-            System.setOut(System.out);
+            TestUtils.restoreSystemOut();
             SalesTransactionRepository.clearSalesTransactionList();
         }
     }

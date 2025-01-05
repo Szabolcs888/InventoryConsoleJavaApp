@@ -4,6 +4,9 @@ import com.myinventoryapp.repository.CustomerRepository;
 import com.myinventoryapp.repository.ProductRepository;
 import com.myinventoryapp.repository.SalesTransactionRepository;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 public final class TestUtils {
 
     private TestUtils() {
@@ -14,5 +17,15 @@ public final class TestUtils {
         ProductRepository.clearProductList();
         CustomerRepository.clearCustomerList();
         SalesTransactionRepository.clearSalesTransactionList();
+    }
+
+    public static ByteArrayOutputStream redirectSystemOut() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        return outputStream;
+    }
+
+    public static void restoreSystemOut() {
+        System.setOut(System.out);
     }
 }

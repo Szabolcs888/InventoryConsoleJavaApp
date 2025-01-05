@@ -5,54 +5,77 @@ import com.myinventoryapp.util.ErrorHandler;
 
 import static org.mockito.Mockito.*;
 
+import com.myinventoryapp.util.testutils.TestUtils;
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryAppTest {
 
     @Test
+    void testMenuSelection_PrintsMessage() {
+        ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
+        String welcomeMessage = "Welcome to the inventory system!" +
+                "You can choose from the following menu items:";
+
+        try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
+            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(3);
+
+            InventoryApp inventoryApp = new InventoryApp();
+            inventoryApp.menuSelection(welcomeMessage);
+
+            String expectedMessage = "Welcome to the inventory system!" +
+                    "You can choose from the following menu items:";
+            String output = outputStream.toString();
+            assertTrue(output.contains(expectedMessage),
+                    "Expected message '" + expectedMessage + "' was not found in the output.");
+        } finally {
+            TestUtils.restoreSystemOut();
+        }
+    }
+
+    @Test
     void testMenuSelection_ValidInput() {
-        String expectedMessage = "You can choose from the following menu items:";
+        TestUtils.redirectSystemOut();
+        String welcomeMessage = "Welcome to the inventory system!";
 
-        String simulatedInput = "3\n";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
-        System.setIn(inputStream);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
+        try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
+            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(4);
 
-        InventoryApp inventoryApp = new InventoryApp();
-        int result = inventoryApp.menuSelection(expectedMessage);
+            InventoryApp inventoryApp = new InventoryApp();
+            int result = inventoryApp.menuSelection(welcomeMessage);
 
-        assertEquals(3, result, "Expected menu selection to be '3', but got: " + result);
-
-        String output = outputStream.toString();
-        assertTrue(output.contains(expectedMessage),
-                "Expected message '" + expectedMessage + "' was not found in the output.");
+            mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(anyString()), times(1));
+            assertEquals(4, result, "Expected menu selection to be '4', but got: " + result);
+        } finally {
+            TestUtils.restoreSystemOut();
+        }
     }
 
     @Test
     void testMenuSelection_InvalidInput() {
+        ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
+        String welcomeMessage = "Welcome to the inventory system!" +
+                "You can choose from the following menu items:";
+
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString()))
                     .thenReturn(0)
                     .thenReturn(3);
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(outputStream));
-
             InventoryApp inventoryApp = new InventoryApp();
-            inventoryApp.menuSelection("You can choose from the following menu items:");
+            inventoryApp.menuSelection(welcomeMessage);
 
+            String expectedMessage = "You can choose from 1 to 6!";
             String output = outputStream.toString();
-            assertTrue(output.contains("You can choose from 1 to 6!"),
-                    "Expected message 'You can choose from 1 to 6!' was not found in the output.");
+            assertTrue(output.contains(expectedMessage),
+                    "Expected message '" + expectedMessage + "' was not found in the output.");
+        } finally {
+            TestUtils.restoreSystemOut();
         }
     }
 

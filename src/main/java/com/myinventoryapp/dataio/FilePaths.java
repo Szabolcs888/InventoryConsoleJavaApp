@@ -1,23 +1,25 @@
 package com.myinventoryapp.dataio;
 
+import java.nio.file.Paths;
+
 public final class FilePaths {
-    private static final String PRODUCTS_FILE = "src/main/resources/inventorydata/productList.txt";
-    private static final String CUSTOMERS_FILE = "src/main/resources/inventorydata/customerList.txt";
-    private static final String TRANSACTIONS_FILE = "src/main/resources/inventorydata/transactionList.txt";
+    private static final String PRODUCTS_FILE_PATH = "src/main/resources/inventorydata/productList.txt";
+    private static final String CUSTOMERS_FILE_PATH = "src/main/resources/inventorydata/customerList.txt";
+    private static final String TRANSACTIONS_FILE_PATH = "src/main/resources/inventorydata/transactionList.txt";
 
     private FilePaths() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
     public static String getProductsFilePath() {
-        return PRODUCTS_FILE;
+        return Paths.get(PRODUCTS_FILE_PATH).toString();
     }
 
     public static String getCustomersFilePath() {
-        return CUSTOMERS_FILE;
+        return Paths.get(CUSTOMERS_FILE_PATH).toString();
     }
 
     public static String getTransactionsFilePath() {
-        return TRANSACTIONS_FILE;
+        return Paths.get(TRANSACTIONS_FILE_PATH).toString();
     }
 }
