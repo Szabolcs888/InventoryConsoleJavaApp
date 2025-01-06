@@ -63,9 +63,7 @@ class InventoryAppTest {
                 "You can choose from the following menu items:";
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
-            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString()))
-                    .thenReturn(0)
-                    .thenReturn(3);
+            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(0).thenReturn(3);
 
             InventoryApp inventoryApp = new InventoryApp();
             inventoryApp.menuSelection(welcomeMessage);

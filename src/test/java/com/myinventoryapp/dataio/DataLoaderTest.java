@@ -65,12 +65,12 @@ class DataLoaderTest {
             dataLoader.loadAllData();
 
             // Verify that the load methods are called with the correct arguments
-            verify(dataLoader, times(1)).loadProductsFromFile(
-                    TestFilePaths.getTestProductsFilePath());
-            verify(dataLoader, times(1)).loadCustomersFromFile(
-                    TestFilePaths.getTestCustomersFilePath());
-            verify(dataLoader, times(1)).loadTransactionsFromFile(
-                    TestFilePaths.getTestTransactionsFilePath());
+            verify(dataLoader, times(1))
+                    .loadProductsFromFile(TestFilePaths.getTestProductsFilePath());
+            verify(dataLoader, times(1))
+                    .loadCustomersFromFile(TestFilePaths.getTestCustomersFilePath());
+            verify(dataLoader, times(1))
+                    .loadTransactionsFromFile(TestFilePaths.getTestTransactionsFilePath());
         }
     }
 
@@ -79,9 +79,12 @@ class DataLoaderTest {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
-        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
+             MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testProductsFilePath))
                     .thenReturn(Collections.emptyList());
+            mockedProductRepository.when(() -> ProductRepository.addProduct(any(Product.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadProductsFromFile(testProductsFilePath);
@@ -100,11 +103,12 @@ class DataLoaderTest {
         TestUtils.redirectSystemOut();
 
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
-        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
+             MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testProductsFilePath))
-                    .thenReturn(Arrays.asList(
-                            "apple,pr5197140,560,25",
-                            "pear,pr4270613,675,19"));
+                    .thenReturn(Collections.emptyList());
+            mockedProductRepository.when(() -> ProductRepository.addProduct(any(Product.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadProductsFromFile(testProductsFilePath);
@@ -117,11 +121,10 @@ class DataLoaderTest {
 
     @Test
     void testLoadProductsFromFile_DataAddedToProductRepository() {
-        ProductRepository.clearProductList();
         TestUtils.redirectSystemOut();
 
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
-        List<String> testFileData = Arrays.asList(
+        List<String> testProductList = Arrays.asList(
                 "apple,pr5197140,560,25",
                 "pear,pr4270613,675,19",
                 "lemon,pr6634365,880,43"
@@ -130,33 +133,43 @@ class DataLoaderTest {
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testProductsFilePath))
-                    .thenReturn(testFileData);
+                    .thenReturn(testProductList);
+            mockedProductRepository.when(() -> ProductRepository.addProduct(any(Product.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadProductsFromFile(testProductsFilePath);
 
-            mockedProductRepository.verify(() -> ProductRepository.addProduct(any(Product.class)), times(testFileData.size()));
-            mockedProductRepository.verify(() -> ProductRepository.addProduct(new Product(
-                    "apple", "pr5197140", 560, 25)), times(1));
-            mockedProductRepository.verify(() -> ProductRepository.addProduct(new Product(
-                    "pear", "pr4270613", 675, 19)), times(1));
-            mockedProductRepository.verify(() -> ProductRepository.addProduct(new Product(
-                    "lemon", "pr6634365", 880, 43)), times(1));
+            List<Product> expectedProducts = Arrays.asList(
+                    new Product("apple", "pr5197140", 560, 25),
+                    new Product("pear", "pr4270613", 675, 19),
+                    new Product("lemon", "pr6634365", 880, 43)
+            );
+            mockedProductRepository.verify(() ->
+                    ProductRepository.addProduct(any(Product.class)), times(testProductList.size()));
+            mockedProductRepository.verify(() ->
+                    ProductRepository.addProduct(expectedProducts.get(0)), times(1));
+            mockedProductRepository.verify(() ->
+                    ProductRepository.addProduct(expectedProducts.get(1)), times(1));
+            mockedProductRepository.verify(() ->
+                    ProductRepository.addProduct(expectedProducts.get(2)), times(1));
         } finally {
             TestUtils.restoreSystemOut();
             ProductRepository.clearProductList();
         }
     }
 
-
     @Test
     void testLoadCustomersFromFile_PrintsMessage() {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
-        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
+             MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testCustomersFilePath))
                     .thenReturn(Collections.emptyList());
+            mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadCustomersFromFile(testCustomersFilePath);
@@ -175,11 +188,12 @@ class DataLoaderTest {
         TestUtils.redirectSystemOut();
 
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
-        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
+             MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testCustomersFilePath))
-                    .thenReturn(Arrays.asList(
-                            "Mikhail Bulgakov,3600,cID3099022",
-                            "Thomas Mann,5400,cID2633111"));
+                    .thenReturn(Collections.emptyList());
+            mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadCustomersFromFile(testCustomersFilePath);
@@ -192,11 +206,10 @@ class DataLoaderTest {
 
     @Test
     void testLoadCustomersFromFile_DataAddedToCustomerRepository() {
-        CustomerRepository.clearCustomerList();
         TestUtils.redirectSystemOut();
 
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
-        List<String> testFileData = Arrays.asList(
+        List<String> testCustomerList = Arrays.asList(
                 "Temesi Szabolcs,9000,cID9168098",
                 "Egerszegi Krisztina,1356,cID5794138",
                 "Nagy Anna,2160,cID5916556"
@@ -205,18 +218,26 @@ class DataLoaderTest {
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testCustomersFilePath))
-                    .thenReturn(testFileData);
+                    .thenReturn(testCustomerList);
+            mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadCustomersFromFile(testCustomersFilePath);
 
-            mockedCustomerRepository.verify(() -> CustomerRepository.addCustomer(any(Customer.class)), times(testFileData.size()));
-            mockedCustomerRepository.verify(() -> CustomerRepository.addCustomer(new Customer(
-                    "Temesi Szabolcs", "cID9168098", 9000)), times(1));
-            mockedCustomerRepository.verify(() -> CustomerRepository.addCustomer(new Customer(
-                    "Egerszegi Krisztina", "cID5794138", 1356)), times(1));
-            mockedCustomerRepository.verify(() -> CustomerRepository.addCustomer(new Customer(
-                    "Nagy Anna", "cID5916556", 2160)), times(1));
+            List<Customer> expectedCustomers = Arrays.asList(
+                    new Customer("Temesi Szabolcs", "cID9168098", 9000),
+                    new Customer("Egerszegi Krisztina", "cID5794138", 1356),
+                    new Customer("Nagy Anna", "cID5916556", 2160)
+            );
+            mockedCustomerRepository.verify(() ->
+                    CustomerRepository.addCustomer(any(Customer.class)), times(testCustomerList.size()));
+            mockedCustomerRepository.verify(() ->
+                    CustomerRepository.addCustomer(expectedCustomers.get(0)), times(1));
+            mockedCustomerRepository.verify(() ->
+                    CustomerRepository.addCustomer(expectedCustomers.get(1)), times(1));
+            mockedCustomerRepository.verify(() ->
+                    CustomerRepository.addCustomer(expectedCustomers.get(2)), times(1));
         } finally {
             TestUtils.restoreSystemOut();
             CustomerRepository.clearCustomerList();
@@ -228,9 +249,13 @@ class DataLoaderTest {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
-        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
+             MockedStatic<SalesTransactionRepository> mockedTransactionRepository =
+                     Mockito.mockStatic(SalesTransactionRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath))
                     .thenReturn(Collections.emptyList());
+            mockedTransactionRepository.when(() -> SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadTransactionsFromFile(testTransactionsFilePath);
@@ -249,11 +274,13 @@ class DataLoaderTest {
         TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
-        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
-            mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath))
-                    .thenReturn(Arrays.asList(
-                            "trId1430909,2024.02.01. 15:03:58,banana,3,720,Nagy Anna,cID5916556",
-                            "trId6173011,2024.02.11. 19:11:51,apple,8,560,Tamasi Tamara,cID8448077"));
+        try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
+             MockedStatic<SalesTransactionRepository> mockedTransactionRepository =
+                     Mockito.mockStatic(SalesTransactionRepository.class)) {
+            mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath)).
+                    thenReturn(Collections.emptyList());
+            mockedTransactionRepository.when(() -> SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)))
+                    .thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadTransactionsFromFile(testTransactionsFilePath);
@@ -266,35 +293,42 @@ class DataLoaderTest {
 
     @Test
     void testLoadTransactionsFromFile_DataAddedToTransactionsRepository() {
-        SalesTransactionRepository.clearSalesTransactionList();
         TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
-        List<String> testFileData = Arrays.asList(
+        List<String> testTransactionsList = Arrays.asList(
                 "trId1430909,2024.02.01. 15:03:58,banana,3,720,Nagy Anna,cID5916556",
                 "trId6173011,2024.02.11. 19:11:51,apple,8,560,Tamasi Tamara,cID8448077",
                 "trId4844949,2024.11.03. 23:42:05,cherry,3,452,Egerszegi Krisztina,cID5794138"
         );
 
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
-             MockedStatic<SalesTransactionRepository> mockedTransactionRepository = Mockito.mockStatic(SalesTransactionRepository.class)) {
-            mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath))
-                    .thenReturn(testFileData);
+             MockedStatic<SalesTransactionRepository> mockedTransactionRepository =
+                     Mockito.mockStatic(SalesTransactionRepository.class)) {
+            mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath)).
+                    thenReturn(testTransactionsList);
+            mockedTransactionRepository.when(() -> SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class))).
+                    thenAnswer(invocation -> null);
 
             DataLoader dataLoader = new DataLoader();
             dataLoader.loadTransactionsFromFile(testTransactionsFilePath);
 
-            mockedTransactionRepository.verify(() -> SalesTransactionRepository.addSalesTransaction(
-                    any(SalesTransaction.class)), times(testFileData.size()));
-            mockedTransactionRepository.verify(() -> SalesTransactionRepository.addSalesTransaction(new SalesTransaction(
-                    "trId1430909", "Nagy Anna", "cID5916556", "banana",
-                    3, 720, "2024.02.01. 15:03:58")), times(1));
-            mockedTransactionRepository.verify(() -> SalesTransactionRepository.addSalesTransaction(new SalesTransaction(
-                    "trId6173011", "Tamasi Tamara", "cID8448077", "apple",
-                    8, 560, "2024.02.11. 19:11:51")), times(1));
-            mockedTransactionRepository.verify(() -> SalesTransactionRepository.addSalesTransaction(new SalesTransaction(
-                    "trId4844949", "Egerszegi Krisztina", "cID5794138", "cherry",
-                    3, 452, "2024.11.03. 23:42:05")), times(1));
+            List<SalesTransaction> expectedSalesTransactions = Arrays.asList(
+                    new SalesTransaction("trId1430909", "Nagy Anna", "cID5916556",
+                            "banana",3, 720,"2024.02.01. 15:03:58"),
+                    new SalesTransaction("trId6173011", "Tamasi Tamara", "cID8448077",
+                            "apple", 8, 560,"2024.02.11. 19:11:51"),
+                    new SalesTransaction("trId4844949", "Egerszegi Krisztina", "cID5794138",
+                            "cherry", 3, 452,"2024.11.03. 23:42:05")
+            );
+            mockedTransactionRepository.verify(() ->
+                    SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)), times(testTransactionsList.size()));
+            mockedTransactionRepository.verify(() ->
+                    SalesTransactionRepository.addSalesTransaction(expectedSalesTransactions.get(0)), times(1));
+            mockedTransactionRepository.verify(() ->
+                    SalesTransactionRepository.addSalesTransaction(expectedSalesTransactions.get(1)), times(1));
+            mockedTransactionRepository.verify(() ->
+                    SalesTransactionRepository.addSalesTransaction(expectedSalesTransactions.get(2)), times(1));
         } finally {
             TestUtils.restoreSystemOut();
             SalesTransactionRepository.clearSalesTransactionList();
