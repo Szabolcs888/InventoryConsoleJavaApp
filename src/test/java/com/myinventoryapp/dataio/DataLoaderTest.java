@@ -99,7 +99,7 @@ class DataLoaderTest {
     }
 
     @Test
-    void testLoadProductsFromFile_ReadFromFileCalled() {
+    void testLoadProductsFromFile_CallsReadFromFileWithCorrectArguments() {
         TestUtils.redirectSystemOut();
 
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
@@ -184,7 +184,7 @@ class DataLoaderTest {
     }
 
     @Test
-    void testLoadCustomersFromFile_ReadFromFileCalled() {
+    void testLoadCustomersFromFile_CallsReadFromFileWithCorrectArguments() {
         TestUtils.redirectSystemOut();
 
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
@@ -270,7 +270,7 @@ class DataLoaderTest {
     }
 
     @Test
-    void testLoadTransactionsFromFile_ReadFromFileCalled() {
+    void testLoadTransactionsFromFile_CallsReadFromFileWithCorrectArguments() {
         TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
@@ -296,7 +296,7 @@ class DataLoaderTest {
         TestUtils.redirectSystemOut();
 
         String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
-        List<String> testTransactionsList = Arrays.asList(
+        List<String> testTransactionList = Arrays.asList(
                 "trId1430909,2024.02.01. 15:03:58,banana,3,720,Nagy Anna,cID5916556",
                 "trId6173011,2024.02.11. 19:11:51,apple,8,560,Tamasi Tamara,cID8448077",
                 "trId4844949,2024.11.03. 23:42:05,cherry,3,452,Egerszegi Krisztina,cID5794138"
@@ -306,7 +306,7 @@ class DataLoaderTest {
              MockedStatic<SalesTransactionRepository> mockedTransactionRepository =
                      Mockito.mockStatic(SalesTransactionRepository.class)) {
             mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath)).
-                    thenReturn(testTransactionsList);
+                    thenReturn(testTransactionList);
             mockedTransactionRepository.when(() -> SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class))).
                     thenAnswer(invocation -> null);
 
@@ -322,7 +322,7 @@ class DataLoaderTest {
                             "cherry", 3, 452,"2024.11.03. 23:42:05")
             );
             mockedTransactionRepository.verify(() ->
-                    SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)), times(testTransactionsList.size()));
+                    SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)), times(testTransactionList.size()));
             mockedTransactionRepository.verify(() ->
                     SalesTransactionRepository.addSalesTransaction(expectedSalesTransactions.get(0)), times(1));
             mockedTransactionRepository.verify(() ->

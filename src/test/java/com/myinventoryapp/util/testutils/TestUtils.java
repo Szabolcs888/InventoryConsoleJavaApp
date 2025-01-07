@@ -13,12 +13,6 @@ public final class TestUtils {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
-    public static void reset() {
-        ProductRepository.clearProductList();
-        CustomerRepository.clearCustomerList();
-        SalesTransactionRepository.clearSalesTransactionList();
-    }
-
     public static ByteArrayOutputStream redirectSystemOut() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -27,5 +21,11 @@ public final class TestUtils {
 
     public static void restoreSystemOut() {
         System.setOut(System.out);
+    }
+
+    public static void reset() {
+        ProductRepository.clearProductList();
+        CustomerRepository.clearCustomerList();
+        SalesTransactionRepository.clearSalesTransactionList();
     }
 }
