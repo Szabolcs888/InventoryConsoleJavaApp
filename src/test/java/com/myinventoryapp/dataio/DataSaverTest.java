@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 class DataSaverTest {
@@ -31,12 +30,12 @@ class DataSaverTest {
             mockedFilePaths.when(FilePaths::getTransactionsFilePath)
                     .thenReturn(TestFilePaths.getTestTransactionsFilePath());
 
-            DataSaver dataSaver = spy(new DataSaver());
-            doNothing().when(dataSaver).saveProductsToFile(anyString());
-            doNothing().when(dataSaver).saveCustomersToFile(anyString());
-            doNothing().when(dataSaver).saveTransactionsToFile(anyString());
+            DataSaver spyDataSaver = Mockito.spy(new DataSaver());
+            Mockito.doNothing().when(spyDataSaver).saveProductsToFile(anyString());
+            Mockito.doNothing().when(spyDataSaver).saveCustomersToFile(anyString());
+            Mockito.doNothing().when(spyDataSaver).saveTransactionsToFile(anyString());
 
-            dataSaver.saveAllData();
+            spyDataSaver.saveAllData();
 
             mockedFilePaths.verify(FilePaths::getProductsFilePath, times(1));
             mockedFilePaths.verify(FilePaths::getCustomersFilePath, times(1));
@@ -54,18 +53,18 @@ class DataSaverTest {
             mockedFilePaths.when(FilePaths::getTransactionsFilePath)
                     .thenReturn(TestFilePaths.getTestTransactionsFilePath());
 
-            DataSaver dataSaver = spy(new DataSaver());
-            doNothing().when(dataSaver).saveProductsToFile(anyString());
-            doNothing().when(dataSaver).saveCustomersToFile(anyString());
-            doNothing().when(dataSaver).saveTransactionsToFile(anyString());
+            DataSaver spyDataSaver = Mockito.spy(new DataSaver());
+            Mockito.doNothing().when(spyDataSaver).saveProductsToFile(anyString());
+            Mockito.doNothing().when(spyDataSaver).saveCustomersToFile(anyString());
+            Mockito.doNothing().when(spyDataSaver).saveTransactionsToFile(anyString());
 
-            dataSaver.saveAllData();
+            spyDataSaver.saveAllData();
 
-            verify(dataSaver, times(1))
+            Mockito.verify(spyDataSaver, times(1))
                     .saveProductsToFile(TestFilePaths.getTestProductsFilePath());
-            verify(dataSaver, times(1))
+            Mockito.verify(spyDataSaver, times(1))
                     .saveCustomersToFile(TestFilePaths.getTestCustomersFilePath());
-            verify(dataSaver, times(1))
+            Mockito.verify(spyDataSaver, times(1))
                     .saveTransactionsToFile(TestFilePaths.getTestTransactionsFilePath());
         }
     }

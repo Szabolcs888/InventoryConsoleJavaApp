@@ -16,14 +16,14 @@ public class CustomerService {
         }
     }
 
-    private String updateRegisteredCustomerPurchases(String customerName, Product product, int quantitySold) {
+    String updateRegisteredCustomerPurchases(String customerName, Product product, int quantitySold) {
         Customer customer = CustomerRepository.findCustomerByName(customerName);
         int currentPurchase = product.getUnitPrice() * quantitySold;
         customer.setTotalPurchases(customer.getTotalPurchases() + currentPurchase);
         return customer.getCustomerId();
     }
 
-    private String registerNewCustomer(String customerName, Product product, int quantitySold) {
+    String registerNewCustomer(String customerName, Product product, int quantitySold) {
         String customerId = "cID" + IdUtils.generateId();
         int totalPurchases = product.getUnitPrice() * quantitySold;
         Customer newCustomer = new Customer(customerName, customerId, totalPurchases);

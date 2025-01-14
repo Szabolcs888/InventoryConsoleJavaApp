@@ -33,12 +33,12 @@ class DataLoaderTest {
             mockedFilePaths.when(FilePaths::getTransactionsFilePath)
                     .thenReturn(TestFilePaths.getTestTransactionsFilePath());
 
-            DataLoader dataLoader = spy(new DataLoader());
-            doNothing().when(dataLoader).loadProductsFromFile(anyString());
-            doNothing().when(dataLoader).loadCustomersFromFile(anyString());
-            doNothing().when(dataLoader).loadTransactionsFromFile(anyString());
+            DataLoader spyDataLoader = Mockito.spy(new DataLoader());
+            Mockito.doNothing().when(spyDataLoader).loadProductsFromFile(anyString());
+            Mockito.doNothing().when(spyDataLoader).loadCustomersFromFile(anyString());
+            Mockito.doNothing().when(spyDataLoader).loadTransactionsFromFile(anyString());
 
-            dataLoader.loadAllData();
+            spyDataLoader.loadAllData();
 
             // Verify that the FilePaths getters were called (this is the additional verification)
             mockedFilePaths.verify(FilePaths::getProductsFilePath, times(1));
@@ -57,19 +57,19 @@ class DataLoaderTest {
             mockedFilePaths.when(FilePaths::getTransactionsFilePath)
                     .thenReturn(TestFilePaths.getTestTransactionsFilePath());
 
-            DataLoader dataLoader = spy(new DataLoader());
-            doNothing().when(dataLoader).loadProductsFromFile(anyString());
-            doNothing().when(dataLoader).loadCustomersFromFile(anyString());
-            doNothing().when(dataLoader).loadTransactionsFromFile(anyString());
+            DataLoader spyDataLoader = Mockito.spy(new DataLoader());
+            Mockito.doNothing().when(spyDataLoader).loadProductsFromFile(anyString());
+            Mockito.doNothing().when(spyDataLoader).loadCustomersFromFile(anyString());
+            Mockito.doNothing().when(spyDataLoader).loadTransactionsFromFile(anyString());
 
-            dataLoader.loadAllData();
+            spyDataLoader.loadAllData();
 
             // Verify that the load methods are called with the correct arguments
-            verify(dataLoader, times(1))
+            Mockito.verify(spyDataLoader, times(1))
                     .loadProductsFromFile(TestFilePaths.getTestProductsFilePath());
-            verify(dataLoader, times(1))
+            Mockito.verify(spyDataLoader, times(1))
                     .loadCustomersFromFile(TestFilePaths.getTestCustomersFilePath());
-            verify(dataLoader, times(1))
+            Mockito.verify(spyDataLoader, times(1))
                     .loadTransactionsFromFile(TestFilePaths.getTestTransactionsFilePath());
         }
     }
@@ -315,11 +315,11 @@ class DataLoaderTest {
 
             List<SalesTransaction> expectedSalesTransactions = Arrays.asList(
                     new SalesTransaction("trId1430909", "Nagy Anna", "cID5916556",
-                            "banana",3, 720,"2024.02.01. 15:03:58"),
+                            "banana", 3, 720, "2024.02.01. 15:03:58"),
                     new SalesTransaction("trId6173011", "Tamasi Tamara", "cID8448077",
-                            "apple", 8, 560,"2024.02.11. 19:11:51"),
+                            "apple", 8, 560, "2024.02.11. 19:11:51"),
                     new SalesTransaction("trId4844949", "Egerszegi Krisztina", "cID5794138",
-                            "cherry", 3, 452,"2024.11.03. 23:42:05")
+                            "cherry", 3, 452, "2024.11.03. 23:42:05")
             );
             mockedTransactionRepository.verify(() ->
                     SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)), times(testTransactionList.size()));
