@@ -80,6 +80,7 @@ class DataSaverTest {
 
         try (MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class);
              MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+
             mockedProductRepository.when(ProductRepository::getProductList).thenReturn(testProductList);
             mockedFileUtils.when(() -> FileUtils.writeToFile(anyString(), anyString())).thenAnswer(invocation -> null);
 
@@ -106,6 +107,7 @@ class DataSaverTest {
 
         try (MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class);
              MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+
             mockedCustomerRepository.when(CustomerRepository::getCustomerList).thenReturn(testCustomerList);
             mockedFileUtils.when(() -> FileUtils.writeToFile(anyString(), anyString())).thenAnswer(invocation -> null);
 
@@ -135,6 +137,7 @@ class DataSaverTest {
 
         try (MockedStatic<SalesTransactionRepository> mockedTransactionRepository = Mockito.mockStatic(SalesTransactionRepository.class);
              MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
+
             mockedTransactionRepository.when(SalesTransactionRepository::getSalesTransactionList).thenReturn(testTransactionList);
             mockedFileUtils.when(() -> FileUtils.writeToFile(anyString(), anyString())).thenAnswer(invocation -> null);
 

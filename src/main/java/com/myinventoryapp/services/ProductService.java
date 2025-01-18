@@ -45,7 +45,7 @@ public class ProductService {
                 product, "PRODUCT INFORMATION AFTER RECEIPT TRANSACTION:");
     }
 
-    private int getQuantityModification(Product product) {
+    int getQuantityModification(Product product) {
         int quantityToBeModified;
         String productName = product.getProductName();
         if (product.getQuantity() == 0) {
@@ -58,12 +58,12 @@ public class ProductService {
         return quantityToBeModified;
     }
 
-    private int calculateNewQuantity(Product product, int quantityModification) {
+    int calculateNewQuantity(Product product, int quantityModification) {
         int quantity = product.getQuantity();
         return quantity + quantityModification;
     }
 
-    private void setNewQuantity(Product product, int newQuantity) {
+    void setNewQuantity(Product product, int newQuantity) {
         product.setQuantity(newQuantity);
         System.out.println("\nThe modification has been made!");
     }

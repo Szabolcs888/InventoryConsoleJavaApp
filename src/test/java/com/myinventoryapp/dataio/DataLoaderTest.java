@@ -81,6 +81,7 @@ class DataLoaderTest {
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testProductsFilePath))
                     .thenReturn(Collections.emptyList());
             mockedProductRepository.when(() -> ProductRepository.addProduct(any(Product.class)))
@@ -105,6 +106,7 @@ class DataLoaderTest {
         String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testProductsFilePath))
                     .thenReturn(Collections.emptyList());
             mockedProductRepository.when(() -> ProductRepository.addProduct(any(Product.class)))
@@ -132,6 +134,7 @@ class DataLoaderTest {
 
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testProductsFilePath))
                     .thenReturn(testProductList);
             mockedProductRepository.when(() -> ProductRepository.addProduct(any(Product.class)))
@@ -166,6 +169,7 @@ class DataLoaderTest {
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testCustomersFilePath))
                     .thenReturn(Collections.emptyList());
             mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class)))
@@ -190,6 +194,7 @@ class DataLoaderTest {
         String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testCustomersFilePath))
                     .thenReturn(Collections.emptyList());
             mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class)))
@@ -217,6 +222,7 @@ class DataLoaderTest {
 
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testCustomersFilePath))
                     .thenReturn(testCustomerList);
             mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class)))
@@ -252,6 +258,7 @@ class DataLoaderTest {
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<SalesTransactionRepository> mockedTransactionRepository =
                      Mockito.mockStatic(SalesTransactionRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath))
                     .thenReturn(Collections.emptyList());
             mockedTransactionRepository.when(() -> SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)))
@@ -277,6 +284,7 @@ class DataLoaderTest {
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<SalesTransactionRepository> mockedTransactionRepository =
                      Mockito.mockStatic(SalesTransactionRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath)).
                     thenReturn(Collections.emptyList());
             mockedTransactionRepository.when(() -> SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class)))
@@ -305,6 +313,7 @@ class DataLoaderTest {
         try (MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class);
              MockedStatic<SalesTransactionRepository> mockedTransactionRepository =
                      Mockito.mockStatic(SalesTransactionRepository.class)) {
+
             mockedFileUtils.when(() -> FileUtils.readFromFile(testTransactionsFilePath)).
                     thenReturn(testTransactionList);
             mockedTransactionRepository.when(() -> SalesTransactionRepository.addSalesTransaction(any(SalesTransaction.class))).

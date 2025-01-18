@@ -126,6 +126,7 @@ class CustomerServiceTest {
 
         try (MockedStatic<IdUtils> mockedIdUtils = Mockito.mockStatic(IdUtils.class);
              MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
+
             mockedIdUtils.when(IdUtils::generateId).thenReturn(2422151);
             mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class))).
                     thenAnswer(invocation -> null);
@@ -147,6 +148,7 @@ class CustomerServiceTest {
 
         try (MockedStatic<IdUtils> mockedIdUtils = Mockito.mockStatic(IdUtils.class);
              MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
+
             mockedIdUtils.when(IdUtils::generateId).thenReturn(6232706);
             mockedCustomerRepository.when(() -> CustomerRepository.addCustomer(any(Customer.class))).
                     thenAnswer(invocation -> null);
@@ -155,7 +157,8 @@ class CustomerServiceTest {
             String customerId = customerService.registerNewCustomer(customerName, product, quantitySold);
 
             assertNotNull(customerId, "The customer ID should not be null.");
-            assertEquals(235 * 2, product.getUnitPrice() * quantitySold, "The total purchase calculation should be correct.");
+            assertEquals(235 * 2, product.getUnitPrice() * quantitySold,
+                    "The total purchase calculation should be correct.");
         }
     }
 

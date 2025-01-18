@@ -27,7 +27,6 @@ class ProductRepositoryTest {
     @Test
     void testGetProductList_ModificationDoesNotAffectOriginal() {
         List<Product> products = ProductRepository.getProductList();
-
         products.add(new Product("apple", "pr5197140", 560, 25));
 
         assertTrue(ProductRepository.getProductList().isEmpty(),
@@ -115,7 +114,8 @@ class ProductRepositoryTest {
         ProductRepository.deleteProduct(product2);
 
         List<Product> products = ProductRepository.getProductList();
-        assertEquals(2, ProductRepository.getProductList().size(), "The products list should contain two products after deletion.");
+        assertEquals(2, ProductRepository.getProductList().size(),
+                "The products list should contain two products after deletion.");
         assertTrue(products.contains(product1), "The product list should still contain 'cherry'.");
         assertTrue(products.contains(product3), "The product list should still contain 'carrot'.");
         assertFalse(products.contains(product2), "The product list should not contain 'mango'.");
