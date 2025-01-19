@@ -19,7 +19,7 @@ import static org.mockito.Mockito.times;
 class ProductServiceTest {
 
     @Test
-    void testAddNewProduct_GeneratesCorrectProductId() {
+    void testAddNewProduct_CallsGenerateIdOnce() {
         String productName = "apple";
         int unitPrice = 560;
         int quantity = 25;
@@ -414,7 +414,6 @@ class ProductServiceTest {
                 "The new quantity should be " + expectedResult + " when modification is " + quantityModification + ".");
     }
 
-    //
     @Test
     void testCalculateNewQuantity_NegativeResult() {
         String productName = "coffee";
