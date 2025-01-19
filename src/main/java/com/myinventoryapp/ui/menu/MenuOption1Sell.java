@@ -28,7 +28,7 @@ public class MenuOption1Sell {
         } while (yesOption.equalsIgnoreCase(askAnotherSell));
     }
 
-    private void processSale() {
+    void processSale() {
         CustomerService customerService = new CustomerService();
         ProductService productService = new ProductService();
         TransactionService transactionService = new TransactionService();
