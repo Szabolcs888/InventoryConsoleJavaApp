@@ -10,6 +10,12 @@ public class MenuOption2GoodsReceipt {
     private static final String YES_OPTION = "Y";
     private static final String DELETE_OPTION = "D";
 
+    private final ProductService productService;
+
+    public MenuOption2GoodsReceipt(ProductService productService) {
+        this.productService = productService;
+    }
+
     public void goodsReceipt(String text) {
         System.out.println(text);
         String inputProductName;
@@ -43,7 +49,6 @@ public class MenuOption2GoodsReceipt {
     private void handleNewProductAddition(String productName) {
         int unitPrice = getProductPrice();
         int quantity = getProductQuantity();
-        ProductService productService = new ProductService();
         productService.addNewProduct(productName, unitPrice, quantity);
     }
 
@@ -82,13 +87,11 @@ public class MenuOption2GoodsReceipt {
         if (YES_OPTION.equalsIgnoreCase(askAddOrRemoveProduct)) {
             askAndUpdateProductQuantity(product);
         } else if (DELETE_OPTION.equalsIgnoreCase(askAddOrRemoveProduct)) {
-            ProductService productService = new ProductService();
             productService.deleteProduct(product);
         }
     }
 
     private void askAndUpdateProductQuantity(Product product) {
-        ProductService productService = new ProductService();
         String modifyProductAnswerAgain;
         do {
             productService.updateProductQuantity(product);

@@ -30,10 +30,8 @@ class CustomerServiceTest {
 
         Mockito.verify(spyCustomerService, times(1)).updateRegisteredCustomerPurchases(
                 customerName, product, quantitySold);
-        Mockito.verify(spyCustomerService, never()).registerNewCustomer(
-                Mockito.anyString(), Mockito.any(Product.class), Mockito.anyInt());
-        assertEquals(expectedResponse, result,
-                "The method should return the registered costumer id.");
+        Mockito.verify(spyCustomerService, never()).registerNewCustomer(anyString(), any(Product.class), anyInt());
+        assertEquals(expectedResponse, result, "The method should return the registered costumer id.");
     }
 
     @Test
@@ -51,12 +49,10 @@ class CustomerServiceTest {
         String result = spyCustomerService.handleCustomerTransaction(
                 isRegisteredCustomer, customerName, product, quantitySold);
 
-        Mockito.verify(spyCustomerService, never()).updateRegisteredCustomerPurchases(
-                Mockito.anyString(), Mockito.any(Product.class), Mockito.anyInt());
+        Mockito.verify(spyCustomerService, never()).updateRegisteredCustomerPurchases(anyString(), any(Product.class), anyInt());
         Mockito.verify(spyCustomerService, times(1)).registerNewCustomer(
                 customerName, product, quantitySold);
-        assertEquals(expectedResponse, result,
-                "The method should return the new costumer ID.");
+        assertEquals(expectedResponse, result, "The method should return the new costumer ID.");
     }
 
     @Test

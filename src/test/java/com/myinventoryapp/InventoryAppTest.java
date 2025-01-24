@@ -5,6 +5,7 @@ import com.myinventoryapp.util.ErrorHandler;
 
 import static org.mockito.Mockito.*;
 
+import com.myinventoryapp.util.testutils.MenuOptionFactory;
 import com.myinventoryapp.util.testutils.TestUtils;
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
@@ -22,10 +23,15 @@ class InventoryAppTest {
         String welcomeMessage = "Welcome to the inventory system!" +
                 "You can choose from the following menu items:";
 
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
+
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(3);
 
-            InventoryApp inventoryApp = new InventoryApp();
+            InventoryApp inventoryApp = new InventoryApp(menuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                    new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), new MenuOption6SaveData());
+
             inventoryApp.menuSelection(welcomeMessage);
 
             String expectedMessage = "Welcome to the inventory system!" +
@@ -43,10 +49,14 @@ class InventoryAppTest {
         TestUtils.redirectSystemOut();
         String welcomeMessage = "Welcome to the inventory system!";
 
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
+
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(4);
 
-            InventoryApp inventoryApp = new InventoryApp();
+            InventoryApp inventoryApp = new InventoryApp(menuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                    new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), new MenuOption6SaveData());
             int result = inventoryApp.menuSelection(welcomeMessage);
 
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(anyString()), times(1));
@@ -62,10 +72,14 @@ class InventoryAppTest {
         String welcomeMessage = "Welcome to the inventory system!" +
                 "You can choose from the following menu items:";
 
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
+
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(0).thenReturn(3);
 
-            InventoryApp inventoryApp = new InventoryApp();
+            InventoryApp inventoryApp = new InventoryApp(menuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                    new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), new MenuOption6SaveData());
             inventoryApp.menuSelection(welcomeMessage);
 
             String expectedMessage = "You can choose from 1 to 6!";
@@ -79,110 +93,153 @@ class InventoryAppTest {
 
     @Test
     void testTransactionSelector_ExecutesMenuOption1Sell() {
-        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp());
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
 
-        MenuOption1Sell mockSellMenu = Mockito.mock(MenuOption1Sell.class);
-        MenuOption6SaveData mockSaveData = Mockito.mock(MenuOption6SaveData.class);
-        spyInventoryApp.setMenuOption1Sell(mockSellMenu);
-        spyInventoryApp.setMenuOption6SaveData(mockSaveData);
+        MenuOption1Sell mockMenuOption1Sell = Mockito.mock(MenuOption1Sell.class);
+        MenuOption6SaveData mockMenuOption6SaveData = Mockito.mock(MenuOption6SaveData.class);
+
+        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp(
+                mockMenuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), mockMenuOption6SaveData));
+
+        Mockito.doNothing().when(mockMenuOption1Sell).sellProduct(anyString());
+        Mockito.doNothing().when(mockMenuOption6SaveData).saveData();
         Mockito.doReturn(6).when(spyInventoryApp).menuSelection(anyString());
 
         spyInventoryApp.transactionSelector(1);
 
-        Mockito.verify(mockSellMenu, times(1)).sellProduct(anyString());
-        Mockito.verify(mockSaveData, times(1)).saveData();
+        Mockito.verify(mockMenuOption1Sell, times(1)).
+                sellProduct("\n-SELL PRODUCT MENU-\n");
+        Mockito.verify(mockMenuOption6SaveData, times(1)).saveData();
     }
 
     @Test
     void testTransactionSelector_ExecutesMenuOption2GoodsReceipt() {
-        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp());
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
 
-        MenuOption2GoodsReceipt mockGoodsReceipt = Mockito.mock(MenuOption2GoodsReceipt.class);
-        MenuOption6SaveData mockSaveData = Mockito.mock(MenuOption6SaveData.class);
-        spyInventoryApp.setMenuOption2GoodsReceipt(mockGoodsReceipt);
-        spyInventoryApp.setMenuOption6SaveData(mockSaveData);
+        MenuOption2GoodsReceipt mockMenuOption2GoodsReceipt = Mockito.mock(MenuOption2GoodsReceipt.class);
+        MenuOption6SaveData mockMenuOption6SaveData = Mockito.mock(MenuOption6SaveData.class);
+
+        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp(
+                menuOption1Sell, mockMenuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), mockMenuOption6SaveData));
+
+        Mockito.doNothing().when(mockMenuOption2GoodsReceipt).goodsReceipt(anyString());
+        Mockito.doNothing().when(mockMenuOption6SaveData).saveData();
         Mockito.doReturn(6).when(spyInventoryApp).menuSelection(anyString());
 
         spyInventoryApp.transactionSelector(2);
 
-        Mockito.verify(mockGoodsReceipt, times(1)).goodsReceipt(anyString());
-        Mockito.verify(mockSaveData, times(1)).saveData();
+        Mockito.verify(mockMenuOption2GoodsReceipt, times(1)).
+                goodsReceipt("\n-RECEIVE PRODUCT MENU-\n");
+        Mockito.verify(mockMenuOption6SaveData, times(1)).saveData();
     }
 
     @Test
     void testTransactionSelector_ExecutesMenuOption3DisplayProducts() {
-        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp());
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
 
-        MenuOption3DisplayProducts mockDisplayProducts = Mockito.mock(MenuOption3DisplayProducts.class);
-        MenuOption6SaveData mockSaveData = Mockito.mock(MenuOption6SaveData.class);
-        spyInventoryApp.setMenuOption3DisplayProducts(mockDisplayProducts);
-        spyInventoryApp.setMenuOption6SaveData(mockSaveData);
+        MenuOption3DisplayProducts mockMenuOption3DisplayProducts = Mockito.mock(MenuOption3DisplayProducts.class);
+        MenuOption6SaveData mockMenuOption6SaveData = Mockito.mock(MenuOption6SaveData.class);
+
+        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp(
+                menuOption1Sell, menuOption2GoodsReceipt, mockMenuOption3DisplayProducts,
+                new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), mockMenuOption6SaveData));
+
+        Mockito.doNothing().when(mockMenuOption3DisplayProducts).displayProductList(anyString());
+        Mockito.doNothing().when(mockMenuOption6SaveData).saveData();
         Mockito.doReturn(6).when(spyInventoryApp).menuSelection(anyString());
 
         spyInventoryApp.transactionSelector(3);
 
-        Mockito.verify(mockDisplayProducts, times(1)).displayProductList(anyString());
-        Mockito.verify(mockSaveData, times(1)).saveData();
+        Mockito.verify(mockMenuOption3DisplayProducts, times(1)).
+                displayProductList("\n-DISPLAY AVAILABLE PRODUCTS MENU-\n");
+        Mockito.verify(mockMenuOption6SaveData, times(1)).saveData();
     }
 
     @Test
     void testTransactionSelector_ExecutesMenuOption4DisplayCustomers() {
-        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp());
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
 
-        MenuOption4DisplayCustomers mockDisplayCustomers = Mockito.mock(MenuOption4DisplayCustomers.class);
-        MenuOption6SaveData mockSaveData = Mockito.mock(MenuOption6SaveData.class);
-        spyInventoryApp.setMenuOption4DisplayCustomers(mockDisplayCustomers);
-        spyInventoryApp.setMenuOption6SaveData(mockSaveData);
+        MenuOption4DisplayCustomers mockMenuOption4DisplayCustomers = Mockito.mock(MenuOption4DisplayCustomers.class);
+        MenuOption6SaveData mockMenuOption6SaveData = Mockito.mock(MenuOption6SaveData.class);
+
+        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp(
+                menuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                mockMenuOption4DisplayCustomers, new MenuOption5DisplayTransactions(), mockMenuOption6SaveData));
+
+        Mockito.doNothing().when(mockMenuOption4DisplayCustomers).displayCustomerList(anyString());
+        Mockito.doNothing().when(mockMenuOption6SaveData).saveData();
         Mockito.doReturn(6).when(spyInventoryApp).menuSelection(anyString());
 
         spyInventoryApp.transactionSelector(4);
 
-        Mockito.verify(mockDisplayCustomers, times(1)).displayCustomerList(anyString());
-        Mockito.verify(mockSaveData, times(1)).saveData();
+        Mockito.verify(mockMenuOption4DisplayCustomers, times(1)).
+                displayCustomerList("\n-DISPLAY CUSTOMERS MENU-\n");
+        Mockito.verify(mockMenuOption6SaveData, times(1)).saveData();
     }
 
     @Test
     void testTransactionSelector_ExecutesMenuOption5DisplayTransactions() {
-        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp());
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
 
-        MenuOption5DisplayTransactions mockDisplayTransactions = Mockito.mock(MenuOption5DisplayTransactions.class);
-        MenuOption6SaveData mockSaveData = Mockito.mock(MenuOption6SaveData.class);
-        spyInventoryApp.setMenuOption5DisplayTransactions(mockDisplayTransactions);
-        spyInventoryApp.setMenuOption6SaveData(mockSaveData);
+        MenuOption5DisplayTransactions mockMenuOption5DisplayTransactions = Mockito.mock(MenuOption5DisplayTransactions.class);
+        MenuOption6SaveData mockMenuOption6SaveData = Mockito.mock(MenuOption6SaveData.class);
+
+        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp(
+                menuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                new MenuOption4DisplayCustomers(), mockMenuOption5DisplayTransactions, mockMenuOption6SaveData));
+
+        Mockito.doNothing().when(mockMenuOption5DisplayTransactions).displayTransactionList(anyString());
+        Mockito.doNothing().when(mockMenuOption6SaveData).saveData();
         Mockito.doReturn(6).when(spyInventoryApp).menuSelection(anyString());
 
         spyInventoryApp.transactionSelector(5);
 
-        Mockito.verify(mockDisplayTransactions, times(1)).displayTransactionList(anyString());
-        Mockito.verify(mockSaveData, times(1)).saveData();
+        Mockito.verify(mockMenuOption5DisplayTransactions, times(1)).
+                displayTransactionList("\n-DISPLAY TRANSACTIONS MENU-\n");
+        Mockito.verify(mockMenuOption6SaveData, times(1)).saveData();
     }
 
     @Test
     void testTransactionSelector_ExecutesMenuOption6SaveData() {
-        InventoryApp inventoryApp = new InventoryApp();
+        MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
 
-        MenuOption6SaveData mockSaveData = Mockito.mock(MenuOption6SaveData.class);
-        inventoryApp.setMenuOption6SaveData(mockSaveData);
+        MenuOption6SaveData mockMenuOption6SaveData = Mockito.mock(MenuOption6SaveData.class);
+
+        InventoryApp inventoryApp = new InventoryApp(
+                menuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), mockMenuOption6SaveData);
 
         inventoryApp.transactionSelector(6);
 
-        Mockito.verify(mockSaveData, times(1)).saveData();
+        Mockito.verify(mockMenuOption6SaveData, times(1)).saveData();
     }
 
     @Test
     void testTransactionSelector_WithMenuSelection() {
-        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp());
+        MenuOption1Sell mockMenuOption1Sell = Mockito.mock(MenuOption1Sell.class);
+        MenuOption6SaveData mockMenuOption6SaveData = Mockito.mock(MenuOption6SaveData.class);
 
-        MenuOption1Sell mockSellMenu = Mockito.mock(MenuOption1Sell.class);
-        MenuOption6SaveData mockSaveData = Mockito.mock(MenuOption6SaveData.class);
-        spyInventoryApp.setMenuOption1Sell(mockSellMenu);
-        spyInventoryApp.setMenuOption6SaveData(mockSaveData);
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
+        InventoryApp spyInventoryApp = Mockito.spy(new InventoryApp(
+                mockMenuOption1Sell, menuOption2GoodsReceipt, new MenuOption3DisplayProducts(),
+                new MenuOption4DisplayCustomers(), new MenuOption5DisplayTransactions(), mockMenuOption6SaveData));
+
+        Mockito.doNothing().when(mockMenuOption1Sell).sellProduct(anyString());
+        Mockito.doNothing().when(mockMenuOption6SaveData).saveData();
         Mockito.doReturn(6).when(spyInventoryApp).menuSelection(anyString());
 
         spyInventoryApp.transactionSelector(1);
 
-        Mockito.verify(spyInventoryApp, times(1)).menuSelection(anyString());
-        Mockito.verify(mockSellMenu, times(1)).sellProduct(anyString());
-        Mockito.verify(mockSaveData, times(1)).saveData();
+        Mockito.verify(spyInventoryApp, times(1)).
+                menuSelection("\n-MAIN MENU-\n");
+        Mockito.verify(mockMenuOption1Sell, times(1)).
+                sellProduct("\n-SELL PRODUCT MENU-\n");
+        Mockito.verify(mockMenuOption6SaveData, times(1)).saveData();
     }
 }

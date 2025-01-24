@@ -1,5 +1,8 @@
 package com.myinventoryapp;
 
+import com.myinventoryapp.services.CustomerService;
+import com.myinventoryapp.services.ProductService;
+import com.myinventoryapp.services.TransactionService;
 import com.myinventoryapp.ui.menu.*;
 import com.myinventoryapp.util.Colors;
 import com.myinventoryapp.util.ErrorHandler;
@@ -7,15 +10,12 @@ import com.myinventoryapp.dataio.DataLoader;
 import com.myinventoryapp.util.MenuOption;
 
 public class InventoryApp {
-    private MenuOption1Sell menuOption1Sell;
-    private MenuOption2GoodsReceipt menuOption2GoodsReceipt;
-    private MenuOption3DisplayProducts menuOption3DisplayProducts;
-    private MenuOption4DisplayCustomers menuOption4DisplayCustomers;
-    private MenuOption5DisplayTransactions menuOption5DisplayTransactions;
-    private MenuOption6SaveData menuOption6SaveData;
-
-    public InventoryApp() {
-    }
+    private final MenuOption1Sell menuOption1Sell;
+    private final MenuOption2GoodsReceipt menuOption2GoodsReceipt;
+    private final MenuOption3DisplayProducts menuOption3DisplayProducts;
+    private final MenuOption4DisplayCustomers menuOption4DisplayCustomers;
+    private final MenuOption5DisplayTransactions menuOption5DisplayTransactions;
+    private final MenuOption6SaveData menuOption6SaveData;
 
     public InventoryApp(
             MenuOption1Sell menuOption1Sell,
@@ -33,16 +33,24 @@ public class InventoryApp {
     }
 
     public static void main(String[] args) {
+        CustomerService customerService = new CustomerService();
+        ProductService productService = new ProductService();
+        TransactionService transactionService = new TransactionService();
+
+        MenuOption1Sell menuOption1Sell = new MenuOption1Sell(customerService, productService, transactionService);
+        MenuOption2GoodsReceipt menuOption2GoodsReceipt = new MenuOption2GoodsReceipt(productService);
+        MenuOption3DisplayProducts menuOption3DisplayProducts = new MenuOption3DisplayProducts();
+        MenuOption4DisplayCustomers menuOption4DisplayCustomers = new MenuOption4DisplayCustomers();
+        MenuOption5DisplayTransactions menuOption5DisplayTransactions = new MenuOption5DisplayTransactions();
+        MenuOption6SaveData menuOption6SaveData = new MenuOption6SaveData();
+
+        InventoryApp app = new InventoryApp(
+                menuOption1Sell, menuOption2GoodsReceipt, menuOption3DisplayProducts,
+                menuOption4DisplayCustomers, menuOption5DisplayTransactions, menuOption6SaveData
+        );
+
         DataLoader dataLoader = new DataLoader();
         dataLoader.loadAllData();
-        InventoryApp app = new InventoryApp(
-                new MenuOption1Sell(),
-                new MenuOption2GoodsReceipt(),
-                new MenuOption3DisplayProducts(),
-                new MenuOption4DisplayCustomers(),
-                new MenuOption5DisplayTransactions(),
-                new MenuOption6SaveData()
-        );
         int userChoice = app.menuSelection(app.getWelcomeMessage());
         app.transactionSelector(userChoice);
     }
@@ -99,30 +107,5 @@ public class InventoryApp {
         return "\n\nWelcome to the inventory system!" +
                 Colors.GREEN_UNDERLINED.getColorCode() + "\n\nYou can choose from the following menu items:" +
                 Colors.RESET.getColorCode();
-    }
-
-    void setMenuOption1Sell(MenuOption1Sell menuOption1Sell) {
-        this.menuOption1Sell = menuOption1Sell;
-    }
-
-    void setMenuOption2GoodsReceipt(MenuOption2GoodsReceipt menuOption2GoodsReceipt) {
-        this.menuOption2GoodsReceipt = menuOption2GoodsReceipt;
-    }
-
-    void setMenuOption3DisplayProducts(MenuOption3DisplayProducts menuOption3DisplayProducts) {
-        this.menuOption3DisplayProducts = menuOption3DisplayProducts;
-    }
-
-
-    void setMenuOption4DisplayCustomers(MenuOption4DisplayCustomers menuOption4DisplayCustomers) {
-        this.menuOption4DisplayCustomers = menuOption4DisplayCustomers;
-    }
-
-    void setMenuOption5DisplayTransactions(MenuOption5DisplayTransactions menuOption5DisplayTransactions) {
-        this.menuOption5DisplayTransactions = menuOption5DisplayTransactions;
-    }
-
-    void setMenuOption6SaveData(MenuOption6SaveData menuOption6SaveData) {
-        this.menuOption6SaveData = menuOption6SaveData;
     }
 }

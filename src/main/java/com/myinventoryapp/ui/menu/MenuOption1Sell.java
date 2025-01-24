@@ -11,6 +11,15 @@ import com.myinventoryapp.util.displayhelpers.ProductDisplayHelper;
 import com.myinventoryapp.repository.ProductRepository;
 
 public class MenuOption1Sell {
+    private final CustomerService customerService;
+    private final ProductService productService;
+    private final TransactionService transactionService;
+
+    public MenuOption1Sell(CustomerService customerService, ProductService productService, TransactionService transactionService) {
+        this.customerService = customerService;
+        this.productService = productService;
+        this.transactionService = transactionService;
+    }
 
     public void sellProduct(String text) {
         System.out.println(text);
@@ -29,9 +38,6 @@ public class MenuOption1Sell {
     }
 
     void processSale() {
-        CustomerService customerService = new CustomerService();
-        ProductService productService = new ProductService();
-        TransactionService transactionService = new TransactionService();
         String customerName = getCustomerName();
         Product productSold = getProductData();
         int quantitySold = getQuantitySold(productSold);
