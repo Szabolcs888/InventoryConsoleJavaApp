@@ -108,10 +108,7 @@ class ProductServiceTest {
         TestUtils.redirectSystemOut();
 
         String productName = "tea";
-        String productId = "pr7236284";
-        int unitPrice = 1200;
-        int quantity = 52;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product(productName, "pr7236284", 1200, 52);
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
@@ -138,10 +135,7 @@ class ProductServiceTest {
         TestUtils.redirectSystemOut();
 
         String productName = "coffee";
-        String productId = "pr5204875";
-        int unitPrice = 1800;
-        int quantity = 120;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product(productName, "pr5204875", 1800, 120);
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
@@ -166,11 +160,7 @@ class ProductServiceTest {
     void testDeleteProduct_DeletesAndDisplaysConfirmationMessage() {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
-        String productName = "orange juice";
-        String productId = "pr7987615";
-        int unitPrice = 870;
-        int quantity = 89;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("orange juice", "pr7987615", 870, 89);
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
@@ -195,11 +185,7 @@ class ProductServiceTest {
     void testDeleteProduct_AbortsAndDisplaysNoDeletionMessage() {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
-        String productName = "pineapple";
-        String productId = "pr5711807";
-        int unitPrice = 894;
-        int quantity = 1;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("pineapple", "pr5711807", 894, 1);
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class)) {
@@ -222,12 +208,9 @@ class ProductServiceTest {
 
     @Test
     void testUpdateProductQuantity_Product_int() {
-        String productName = "cherry";
-        String productId = "pr7860912";
-        int unitPrice = 452;
         int quantity = 115;
         int quantitySold = 5;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("cherry", "pr7860912", 452, quantity);
 
         ProductService productService = new ProductService();
         productService.updateProductQuantity(product, quantitySold);
@@ -238,11 +221,8 @@ class ProductServiceTest {
 
     @Test
     void testUpdateProductQuantity_Product_SuccessfulUpdate() {
-        String productName = "mango";
-        String productId = "pr4531265";
-        int unitPrice = 1350;
         int quantity = 46;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("mango", "pr4531265", 1350, quantity);
 
         int quantityModification = 15;
         int newQuantity = quantity + quantityModification;
@@ -272,11 +252,8 @@ class ProductServiceTest {
 
     @Test
     void testUpdateProductQuantity_Product_RetryOnNegativeQuantity() {
-        String productName = "carrot";
-        String productId = "pr2110710";
-        int unitPrice = 245;
         int quantity = 31;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("carrot", "pr2110710", 245, quantity);
 
         int negativeQuantityModification = -47;
         int positiveQuantityModification = 35;
@@ -314,10 +291,7 @@ class ProductServiceTest {
     @Test
     void testGetQuantityModification_ProductQuantityZero() {
         String productName = "lemon";
-        String productId = "pr6634365";
-        int unitPrice = 880;
-        int quantity = 0;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product(productName, "pr6634365", 880, 0);
 
         int expectedQuantityModification = 19;
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
@@ -340,10 +314,7 @@ class ProductServiceTest {
     @Test
     void testGetQuantityModification_ProductQuantityNonZero() {
         String productName = "cocoa";
-        String productId = "pr7553549";
-        int unitPrice = 235;
-        int quantity = 35;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product(productName, "pr7553549", 235, 35);
 
         int expectedQuantityModification = 5;
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
@@ -365,12 +336,8 @@ class ProductServiceTest {
 
     @Test
     void testCalculateNewQuantity_PositiveModification() {
-        String productName = "apple";
-        String productId = "pr5197140";
-        int unitPrice = 560;
-        int quantity = 25;
         int quantityModification = 15;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("apple", "pr5197140", 560, 25);
 
         ProductService productService = new ProductService();
         int result = productService.calculateNewQuantity(product, quantityModification);
@@ -382,12 +349,8 @@ class ProductServiceTest {
 
     @Test
     void testCalculateNewQuantity_NegativeModification() {
-        String productName = "pear";
-        String productId = "pr4270613";
-        int unitPrice = 675;
-        int quantity = 92;
         int quantityModification = -32;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("pear", "pr4270613", 675, 92);
 
         ProductService productService = new ProductService();
         int result = productService.calculateNewQuantity(product, quantityModification);
@@ -399,12 +362,8 @@ class ProductServiceTest {
 
     @Test
     void testCalculateNewQuantity_ZeroModification() {
-        String productName = "banana";
-        String productId = "pr5223508";
-        int unitPrice = 720;
-        int quantity = 102;
         int quantityModification = 0;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("banana", "pr5223508", 720, 102);
 
         ProductService productService = new ProductService();
         int result = productService.calculateNewQuantity(product, quantityModification);
@@ -416,12 +375,8 @@ class ProductServiceTest {
 
     @Test
     void testCalculateNewQuantity_NegativeResult() {
-        String productName = "coffee";
-        String productId = "pr5204875";
-        int unitPrice = 1800;
-        int quantity = 92;
         int quantityModification = -157;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("coffee", "pr5204875", 1800, 92);
 
         ProductService productService = new ProductService();
         int result = productService.calculateNewQuantity(product, quantityModification);
@@ -433,12 +388,8 @@ class ProductServiceTest {
 
     @Test
     void testCalculateNewQuantity_LargeNumbers() {
-        String productName = "coffee";
-        String productId = "pr5204875";
-        int unitPrice = 1800;
-        int quantity = Integer.MAX_VALUE - 1;
         int quantityModification = 1;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("apple", "pr5197140", 1800, Integer.MAX_VALUE - 1);
 
         ProductService productService = new ProductService();
         int result = productService.calculateNewQuantity(product, quantityModification);
@@ -452,12 +403,8 @@ class ProductServiceTest {
     void testSetNewQuantity_UpdatesQuantity() {
         TestUtils.redirectSystemOut();
 
-        String productName = "tea";
-        String productId = "pr7236284";
-        int unitPrice = 1200;
-        int quantity = 52;
         int newQuantity = 102;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("tea", "pr7236284", 1200, 52);
 
         ProductService productService = new ProductService();
         productService.setNewQuantity(product, newQuantity);
@@ -471,12 +418,8 @@ class ProductServiceTest {
     void testSetNewQuantity_PrintsMessage() {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
 
-        String productName = "coffee";
-        String productId = "pr5204875";
-        int unitPrice = 1800;
-        int quantity = 125;
         int newQuantity = 93;
-        Product product = new Product(productName, productId, unitPrice, quantity);
+        Product product = new Product("coffee", "pr5204875", 1800, 125);
 
         ProductService productService = new ProductService();
         productService.setNewQuantity(product, newQuantity);

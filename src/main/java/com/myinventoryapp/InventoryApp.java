@@ -18,12 +18,9 @@ public class InventoryApp {
     private final MenuOption6SaveData menuOption6SaveData;
 
     public InventoryApp(
-            MenuOption1Sell menuOption1Sell,
-            MenuOption2GoodsReceipt menuOption2GoodsReceipt,
-            MenuOption3DisplayProducts menuOption3DisplayProducts,
-            MenuOption4DisplayCustomers menuOption4DisplayCustomers,
-            MenuOption5DisplayTransactions menuOption5DisplayTransactions,
-            MenuOption6SaveData menuOption6SaveData) {
+            MenuOption1Sell menuOption1Sell, MenuOption2GoodsReceipt menuOption2GoodsReceipt,
+            MenuOption3DisplayProducts menuOption3DisplayProducts, MenuOption4DisplayCustomers menuOption4DisplayCustomers,
+            MenuOption5DisplayTransactions menuOption5DisplayTransactions, MenuOption6SaveData menuOption6SaveData) {
         this.menuOption1Sell = menuOption1Sell;
         this.menuOption2GoodsReceipt = menuOption2GoodsReceipt;
         this.menuOption3DisplayProducts = menuOption3DisplayProducts;
