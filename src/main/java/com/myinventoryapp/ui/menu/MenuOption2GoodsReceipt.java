@@ -33,7 +33,7 @@ public class MenuOption2GoodsReceipt {
         } while (YES_OPTION.equalsIgnoreCase(askAddOrModifyProduct));
     }
 
-    private String getProductName() {
+    String getProductName() {
         String inputProductName;
         do {
             inputProductName = UserInputUtils.readFromUser("Please enter the product name:");
@@ -46,13 +46,13 @@ public class MenuOption2GoodsReceipt {
         return ProductRepository.findProductByName(inputProductName) != null;
     }
 
-    private void handleNewProductAddition(String productName) {
+    void handleNewProductAddition(String productName) {
         int unitPrice = getProductPrice();
         int quantity = getProductQuantity();
         productService.addNewProduct(productName, unitPrice, quantity);
     }
 
-    private int getProductPrice() {
+    int getProductPrice() {
         int unitPrice;
         do {
             unitPrice = ErrorHandler.getValidNumber("\nPlease enter the product price:");
@@ -61,7 +61,7 @@ public class MenuOption2GoodsReceipt {
         return unitPrice;
     }
 
-    private int getProductQuantity() {
+    int getProductQuantity() {
         int quantity;
         do {
             quantity = ErrorHandler.getValidNumber("\nPlease enter the product quantity:");
@@ -70,7 +70,7 @@ public class MenuOption2GoodsReceipt {
         return quantity;
     }
 
-    private void handleProductIfInList(String inputProductName) {
+    void handleProductIfInList(String inputProductName) {
         Product product = ProductRepository.findProductByName(inputProductName);
         if (product != null) {
             ProductDisplayHelper.displayExistingProductInfo(product);
@@ -80,7 +80,7 @@ public class MenuOption2GoodsReceipt {
         }
     }
 
-    private void askUserForProductAction(Product product) {
+    void askUserForProductAction(Product product) {
         String askAddOrRemoveProduct = ErrorHandler.getYesOrNoOrDeleteAnswer(
                 "Would you like to add to or subtract from the product quantity? (Y/N) " +
                         "To delete from the inventory, press \"D\"!");
@@ -91,7 +91,7 @@ public class MenuOption2GoodsReceipt {
         }
     }
 
-    private void askAndUpdateProductQuantity(Product product) {
+    void askAndUpdateProductQuantity(Product product) {
         String modifyProductAnswerAgain;
         do {
             productService.updateProductQuantity(product);

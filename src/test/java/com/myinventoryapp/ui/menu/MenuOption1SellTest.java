@@ -60,7 +60,8 @@ class MenuOption1SellTest {
             spyMenuOption1Sell.sellProduct(anyString());
 
             mockedProductRepository.verify(ProductRepository::getProductList, times(1));
-            mockedProductDisplayHelper.verify(ProductDisplayHelper::displayNoProductsAvailableMessage, times(1));
+            mockedProductDisplayHelper.verify(
+                    ProductDisplayHelper::displayNoProductsAvailableMessage, times(1));
             Mockito.verify(spyMenuOption1Sell, never()).processSale();
         }
     }
@@ -81,7 +82,8 @@ class MenuOption1SellTest {
             spyMenuOption1Sell.sellProduct(anyString());
 
             mockedProductRepository.verify(ProductRepository::getProductList, times(1));
-            mockedProductDisplayHelper.verify(ProductDisplayHelper::displayNoProductsAvailableMessage, times(0));
+            mockedProductDisplayHelper.verify(
+                    ProductDisplayHelper::displayNoProductsAvailableMessage, times(0));
             Mockito.verify(spyMenuOption1Sell, times(1)).processSale();
             mockedErrorHandler.verify(() -> ErrorHandler.getYesOrNoAnswer(
                     "Would you like to register another sale? (Y/N)"), times(1));
@@ -97,14 +99,16 @@ class MenuOption1SellTest {
              MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
             MenuOption1Sell spyMenuOption1Sell = Mockito.spy(MenuOptionFactory.createMenuOption1Sell());
 
-            mockedProductRepository.when(ProductRepository::getProductList).thenReturn(Collections.singletonList(product), Collections.singletonList(product));
+            mockedProductRepository.when(ProductRepository::getProductList).thenReturn(
+                    Collections.singletonList(product), Collections.singletonList(product));
             mockedErrorHandler.when(() -> ErrorHandler.getYesOrNoAnswer(anyString())).thenReturn("Y", "N");
             Mockito.doNothing().when(spyMenuOption1Sell).processSale();
 
             spyMenuOption1Sell.sellProduct(anyString());
 
             mockedProductRepository.verify(ProductRepository::getProductList, times(2));
-            mockedProductDisplayHelper.verify(ProductDisplayHelper::displayNoProductsAvailableMessage, times(0));
+            mockedProductDisplayHelper.verify(
+                    ProductDisplayHelper::displayNoProductsAvailableMessage, times(0));
             Mockito.verify(spyMenuOption1Sell, times(2)).processSale();
             mockedErrorHandler.verify(() -> ErrorHandler.getYesOrNoAnswer(
                     "Would you like to register another sale? (Y/N)"), times(2));
@@ -215,7 +219,8 @@ class MenuOption1SellTest {
             String result = menuOption1Sell.getCustomerName();
 
             assertEquals(customerName, result);
-            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("Please enter the customer's name:"), times(1));
+            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("Please enter the customer's name:"),
+                    times(1));
             mockedErrorHandler.verify(() -> ErrorHandler.validateName(customerName), times(1));
             mockedValidationUtils.verify(() -> ValidationUtils.isValidName(customerName), times(1));
         }
@@ -231,7 +236,8 @@ class MenuOption1SellTest {
              MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
              MockedStatic<ValidationUtils> mockedValidationUtils = Mockito.mockStatic(ValidationUtils.class)) {
 
-            mockedUserInputUtils.when(() -> UserInputUtils.readFromUser(anyString())).thenReturn(invalidCustomerName).thenReturn(customerName);
+            mockedUserInputUtils.when(() -> UserInputUtils.readFromUser(anyString())).
+                    thenReturn(invalidCustomerName).thenReturn(customerName);
             mockedErrorHandler.when(() -> ErrorHandler.validateName(anyString())).thenAnswer(invocation -> null);
             mockedValidationUtils.when(() -> ValidationUtils.isValidName(invalidCustomerName)).thenReturn(isValidName);
             mockedValidationUtils.when(() -> ValidationUtils.isValidName(customerName)).thenReturn(true);
@@ -240,7 +246,8 @@ class MenuOption1SellTest {
             String result = menuOption1Sell.getCustomerName();
 
             assertEquals(customerName, result);
-            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("Please enter the customer's name:"), times(2));
+            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("Please enter the customer's name:"),
+                    times(2));
             mockedErrorHandler.verify(() -> ErrorHandler.validateName(invalidCustomerName), times(1));
             mockedValidationUtils.verify(() -> ValidationUtils.isValidName(invalidCustomerName), times(1));
             mockedErrorHandler.verify(() -> ErrorHandler.validateName(customerName), times(1));
@@ -259,17 +266,22 @@ class MenuOption1SellTest {
 
             mockedUserInputUtils.when(() -> UserInputUtils.readFromUser(anyString())).thenReturn(inputProductName);
             mockedProductRepository.when(() -> ProductRepository.findProductByName(inputProductName)).thenReturn(foundProduct);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct)).thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct)).
+                    thenAnswer(invocation -> null);
             mockedProductDisplayHelper.when(ProductDisplayHelper::displayOutOfStockMessage).thenAnswer(invocation -> null);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).
+                    thenAnswer(invocation -> null);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             Product resultProduct = menuOption1Sell.getProductData();
 
             assertEquals(foundProduct, resultProduct);
-            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("\nPlease enter the name of the product to be sold:"), times(1));
-            mockedProductRepository.verify(() -> ProductRepository.findProductByName(inputProductName), times(1));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct), times(1));
+            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser(
+                    "\nPlease enter the name of the product to be sold:"), times(1));
+            mockedProductRepository.verify(() -> ProductRepository.findProductByName(inputProductName),
+                    times(1));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct),
+                    times(1));
             mockedProductDisplayHelper.verify(ProductDisplayHelper::displayOutOfStockMessage, never());
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString()), never());
         }
@@ -286,24 +298,33 @@ class MenuOption1SellTest {
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class);
              MockedStatic<ProductDisplayHelper> mockedProductDisplayHelper = Mockito.mockStatic(ProductDisplayHelper.class)) {
 
-            mockedUserInputUtils.when(() -> UserInputUtils.readFromUser(anyString())).thenReturn(firstProductName).thenReturn(secondProductName);
+            mockedUserInputUtils.when(() -> UserInputUtils.readFromUser(anyString())).thenReturn(firstProductName).
+                    thenReturn(secondProductName);
             mockedProductRepository.when(() -> ProductRepository.findProductByName(firstProductName)).thenReturn(firstProduct);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(firstProduct)).thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(firstProduct)).
+                    thenAnswer(invocation -> null);
             mockedProductDisplayHelper.when(ProductDisplayHelper::displayOutOfStockMessage).thenAnswer(invocation -> null);
             mockedProductRepository.when(() -> ProductRepository.findProductByName(secondProductName)).thenReturn(secondProduct);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(secondProduct)).thenAnswer(invocation -> null);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(secondProduct)).
+                    thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).
+                    thenAnswer(invocation -> null);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             Product resultProduct = menuOption1Sell.getProductData();
 
             assertEquals(secondProduct, resultProduct);
-            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("\nPlease enter the name of the product to be sold:"), times(2));
-            mockedProductRepository.verify(() -> ProductRepository.findProductByName(firstProductName), times(1));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(firstProduct), times(1));
+            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser(
+                    "\nPlease enter the name of the product to be sold:"), times(2));
+            mockedProductRepository.verify(() -> ProductRepository.findProductByName(firstProductName),
+                    times(1));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(firstProduct),
+                    times(1));
             mockedProductDisplayHelper.verify(ProductDisplayHelper::displayOutOfStockMessage, times(1));
-            mockedProductRepository.verify(() -> ProductRepository.findProductByName(secondProductName), times(1));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(secondProduct), times(1));
+            mockedProductRepository.verify(() -> ProductRepository.findProductByName(secondProductName),
+                    times(1));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(secondProduct),
+                    times(1));
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString()), never());
         }
     }
@@ -318,23 +339,32 @@ class MenuOption1SellTest {
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class);
              MockedStatic<ProductDisplayHelper> mockedProductDisplayHelper = Mockito.mockStatic(ProductDisplayHelper.class)) {
 
-            mockedUserInputUtils.when(() -> UserInputUtils.readFromUser(anyString())).thenReturn(notFoundProductName).thenReturn(foundProductName);
+            mockedUserInputUtils.when(() -> UserInputUtils.readFromUser(anyString())).thenReturn(notFoundProductName).
+                    thenReturn(foundProductName);
             mockedProductRepository.when(() -> ProductRepository.findProductByName(notFoundProductName)).thenReturn(null);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(any(Product.class))).thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(any(Product.class))).
+                    thenAnswer(invocation -> null);
             mockedProductDisplayHelper.when(ProductDisplayHelper::displayOutOfStockMessage).thenAnswer(invocation -> null);
             mockedProductRepository.when(() -> ProductRepository.findProductByName(foundProductName)).thenReturn(foundProduct);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct)).thenAnswer(invocation -> null);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct)).
+                    thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).
+                    thenAnswer(invocation -> null);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             Product resultProduct = menuOption1Sell.getProductData();
 
             assertEquals(foundProduct, resultProduct);
-            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("\nPlease enter the name of the product to be sold:"), times(2));
-            mockedProductRepository.verify(() -> ProductRepository.findProductByName(notFoundProductName), times(1));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductNotFoundMessage(notFoundProductName), times(1));
-            mockedProductRepository.verify(() -> ProductRepository.findProductByName(foundProductName), times(1));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct), times(1));
+            mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser(
+                    "\nPlease enter the name of the product to be sold:"), times(2));
+            mockedProductRepository.verify(() -> ProductRepository.findProductByName(notFoundProductName),
+                    times(1));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductNotFoundMessage(notFoundProductName),
+                    times(1));
+            mockedProductRepository.verify(() -> ProductRepository.findProductByName(foundProductName),
+                    times(1));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoIfProductFound(foundProduct),
+                    times(1));
             mockedProductDisplayHelper.verify(ProductDisplayHelper::displayOutOfStockMessage, never());
         }
     }
@@ -348,14 +378,17 @@ class MenuOption1SellTest {
              MockedStatic<ProductDisplayHelper> mockedProductDisplayHelper = Mockito.mockStatic(ProductDisplayHelper.class)) {
 
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(quantitySold);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(any(Product.class), anyInt(), anyInt())).thenAnswer(invocation -> null);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
+                    any(Product.class), anyInt(), anyInt())).thenAnswer(invocation -> null);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             int resultQuantitySold = menuOption1Sell.getQuantitySold(product);
 
             assertEquals(quantitySold, resultQuantitySold);
-            mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the quantity to be sold:"), times(1));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(product, 35, quantitySold), times(1));
+            mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the quantity to be sold:"),
+                    times(1));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
+                    product, 35, quantitySold), times(1));
         }
     }
 
@@ -368,16 +401,21 @@ class MenuOption1SellTest {
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
              MockedStatic<ProductDisplayHelper> mockedProductDisplayHelper = Mockito.mockStatic(ProductDisplayHelper.class)) {
 
-            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(invalidQuantitySold).thenReturn(validQuantitySold);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(any(Product.class), anyInt(), anyInt())).thenAnswer(invocation -> null);
+            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(invalidQuantitySold).
+                    thenReturn(validQuantitySold);
+            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
+                    any(Product.class), anyInt(), anyInt())).thenAnswer(invocation -> null);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             int resultQuantitySold = menuOption1Sell.getQuantitySold(product);
 
             assertEquals(validQuantitySold, resultQuantitySold);
-            mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the quantity to be sold:"), times(2));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(product, 35, invalidQuantitySold), times(1));
-            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(product, 35, validQuantitySold), times(1));
+            mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the quantity to be sold:"),
+                    times(2));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
+                    product, 35, invalidQuantitySold), times(1));
+            mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
+                    product, 35, validQuantitySold), times(1));
         }
     }
 
@@ -387,13 +425,15 @@ class MenuOption1SellTest {
         Customer foundCustomer = new Customer("Tamasi Tamara", "cID8448077", 4480);
 
         try (MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
-            mockedCustomerRepository.when(() -> CustomerRepository.findCustomerByName(anyString())).thenReturn(foundCustomer);
+            mockedCustomerRepository.when(() -> CustomerRepository.findCustomerByName(anyString())).
+                    thenReturn(foundCustomer);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             boolean isCustomerRegistered = menuOption1Sell.isCustomerRegistered(customerName);
 
             assertTrue(isCustomerRegistered);
-            mockedCustomerRepository.verify(() -> CustomerRepository.findCustomerByName(customerName), times(1));
+            mockedCustomerRepository.verify(() -> CustomerRepository.findCustomerByName(customerName),
+                    times(1));
         }
     }
 
@@ -408,7 +448,8 @@ class MenuOption1SellTest {
             boolean isCustomerRegistered = menuOption1Sell.isCustomerRegistered(customerName);
 
             assertFalse(isCustomerRegistered);
-            mockedCustomerRepository.verify(() -> CustomerRepository.findCustomerByName(customerName), times(1));
+            mockedCustomerRepository.verify(() -> CustomerRepository.findCustomerByName(customerName),
+                    times(1));
         }
     }
 }
