@@ -1,10 +1,10 @@
 package com.myinventoryapp.util.testutils;
 
+import com.myinventoryapp.dataio.DataSaver;
 import com.myinventoryapp.services.CustomerService;
 import com.myinventoryapp.services.ProductService;
 import com.myinventoryapp.services.TransactionService;
-import com.myinventoryapp.ui.menu.MenuOption1Sell;
-import com.myinventoryapp.ui.menu.MenuOption2GoodsReceipt;
+import com.myinventoryapp.ui.menu.*;
 
 public class MenuOptionFactory {
 
@@ -18,5 +18,10 @@ public class MenuOptionFactory {
     public static MenuOption2GoodsReceipt createMenuOption2GoodsReceipt() {
         ProductService productService = new ProductService();
         return new MenuOption2GoodsReceipt(productService);
+    }
+
+    public static MenuOption6SaveData createMenuOption6SaveData() {
+        DataSaver dataSaver = new DataSaver();
+        return new MenuOption6SaveData(dataSaver);
     }
 }

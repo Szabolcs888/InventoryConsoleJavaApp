@@ -1,5 +1,6 @@
 package com.myinventoryapp;
 
+import com.myinventoryapp.dataio.DataSaver;
 import com.myinventoryapp.services.CustomerService;
 import com.myinventoryapp.services.ProductService;
 import com.myinventoryapp.services.TransactionService;
@@ -16,40 +17,47 @@ public class InventoryApp {
     private final MenuOption4DisplayCustomers menuOption4DisplayCustomers;
     private final MenuOption5DisplayTransactions menuOption5DisplayTransactions;
     private final MenuOption6SaveData menuOption6SaveData;
+    private final DataLoader dataLoader;
 
     public InventoryApp(
             MenuOption1Sell menuOption1Sell, MenuOption2GoodsReceipt menuOption2GoodsReceipt,
             MenuOption3DisplayProducts menuOption3DisplayProducts, MenuOption4DisplayCustomers menuOption4DisplayCustomers,
-            MenuOption5DisplayTransactions menuOption5DisplayTransactions, MenuOption6SaveData menuOption6SaveData) {
+            MenuOption5DisplayTransactions menuOption5DisplayTransactions, MenuOption6SaveData menuOption6SaveData,
+            DataLoader dataLoader
+    ) {
         this.menuOption1Sell = menuOption1Sell;
         this.menuOption2GoodsReceipt = menuOption2GoodsReceipt;
         this.menuOption3DisplayProducts = menuOption3DisplayProducts;
         this.menuOption4DisplayCustomers = menuOption4DisplayCustomers;
         this.menuOption5DisplayTransactions = menuOption5DisplayTransactions;
         this.menuOption6SaveData = menuOption6SaveData;
+        this.dataLoader = dataLoader;
     }
 
     public static void main(String[] args) {
+        InventoryApp app = getInventoryApp();
+        app.dataLoader.loadAllData();
+        int userChoice = app.menuSelection(app.getWelcomeMessage());
+        app.transactionSelector(userChoice);
+    }
+
+    private static InventoryApp getInventoryApp() {
         CustomerService customerService = new CustomerService();
         ProductService productService = new ProductService();
         TransactionService transactionService = new TransactionService();
+        DataSaver dataSaver = new DataSaver();
 
         MenuOption1Sell menuOption1Sell = new MenuOption1Sell(customerService, productService, transactionService);
         MenuOption2GoodsReceipt menuOption2GoodsReceipt = new MenuOption2GoodsReceipt(productService);
         MenuOption3DisplayProducts menuOption3DisplayProducts = new MenuOption3DisplayProducts();
         MenuOption4DisplayCustomers menuOption4DisplayCustomers = new MenuOption4DisplayCustomers();
         MenuOption5DisplayTransactions menuOption5DisplayTransactions = new MenuOption5DisplayTransactions();
-        MenuOption6SaveData menuOption6SaveData = new MenuOption6SaveData();
-
-        InventoryApp app = new InventoryApp(
-                menuOption1Sell, menuOption2GoodsReceipt, menuOption3DisplayProducts,
-                menuOption4DisplayCustomers, menuOption5DisplayTransactions, menuOption6SaveData
-        );
-
+        MenuOption6SaveData menuOption6SaveData = new MenuOption6SaveData(dataSaver);
         DataLoader dataLoader = new DataLoader();
-        dataLoader.loadAllData();
-        int userChoice = app.menuSelection(app.getWelcomeMessage());
-        app.transactionSelector(userChoice);
+
+        InventoryApp app = new InventoryApp(menuOption1Sell, menuOption2GoodsReceipt, menuOption3DisplayProducts,
+                menuOption4DisplayCustomers, menuOption5DisplayTransactions, menuOption6SaveData, dataLoader);
+        return app;
     }
 
     int menuSelection(String welcomeMessage) {

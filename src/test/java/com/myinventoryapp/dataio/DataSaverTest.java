@@ -71,8 +71,8 @@ class DataSaverTest {
 
     @Test
     void testSaveProductsToFile_CallsWriteToFileWithCorrectContent() {
-        String testProductsFilePath = TestFilePaths.getTestProductsFilePath();
-        List<Product> testProductList = Arrays.asList(
+        String productsFilePath = TestFilePaths.getTestProductsFilePath();
+        List<Product> productList = Arrays.asList(
                 new Product("tea", "pr7236284", 1200, 52),
                 new Product("coffee", "pr5204875", 1800, 41),
                 new Product("orange juice", "pr7987615", 870, 89)
@@ -81,25 +81,24 @@ class DataSaverTest {
         try (MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class);
              MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
 
-            mockedProductRepository.when(ProductRepository::getProductList).thenReturn(testProductList);
+            mockedProductRepository.when(ProductRepository::getProductList).thenReturn(productList);
             mockedFileUtils.when(() -> FileUtils.writeToFile(anyString(), anyString())).thenAnswer(invocation -> null);
 
             DataSaver dataSaver = new DataSaver();
-            dataSaver.saveProductsToFile(testProductsFilePath);
+            dataSaver.saveProductsToFile(productsFilePath);
 
             String expectedContent =
                     "tea,pr7236284,1200,52\n" +
                             "coffee,pr5204875,1800,41\n" +
                             "orange juice,pr7987615,870,89\n";
-
-            mockedFileUtils.verify(() -> FileUtils.writeToFile(expectedContent, testProductsFilePath), times(1));
+            mockedFileUtils.verify(() -> FileUtils.writeToFile(expectedContent, productsFilePath), times(1));
         }
     }
 
     @Test
     void testSaveCustomersToFile_CallsWriteToFileWithCorrectContent() {
-        String testCustomersFilePath = TestFilePaths.getTestCustomersFilePath();
-        List<Customer> testCustomerList = Arrays.asList(
+        String customersFilePath = TestFilePaths.getTestCustomersFilePath();
+        List<Customer> customerList = Arrays.asList(
                 new Customer("Kovács Ágnes", "cID5513060", 17019),
                 new Customer("Puskás Ferenc", "cID5454036", 10035),
                 new Customer("Mikhail Bulgakov", "cID3099022", 6360)
@@ -108,25 +107,24 @@ class DataSaverTest {
         try (MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class);
              MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
 
-            mockedCustomerRepository.when(CustomerRepository::getCustomerList).thenReturn(testCustomerList);
+            mockedCustomerRepository.when(CustomerRepository::getCustomerList).thenReturn(customerList);
             mockedFileUtils.when(() -> FileUtils.writeToFile(anyString(), anyString())).thenAnswer(invocation -> null);
 
             DataSaver dataSaver = new DataSaver();
-            dataSaver.saveCustomersToFile(testCustomersFilePath);
+            dataSaver.saveCustomersToFile(customersFilePath);
 
             String expectedContent =
                     "Kovács Ágnes,17019,cID5513060\n" +
                             "Puskás Ferenc,10035,cID5454036\n" +
                             "Mikhail Bulgakov,6360,cID3099022\n";
-
-            mockedFileUtils.verify(() -> FileUtils.writeToFile(expectedContent, testCustomersFilePath), times(1));
+            mockedFileUtils.verify(() -> FileUtils.writeToFile(expectedContent, customersFilePath), times(1));
         }
     }
 
     @Test
     void testSaveTransactionsToFile_CallsWriteToFileWithCorrectContent() {
-        String testTransactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
-        List<SalesTransaction> testTransactionList = Arrays.asList(
+        String transactionsFilePath = TestFilePaths.getTestTransactionsFilePath();
+        List<SalesTransaction> transactionList = Arrays.asList(
                 new SalesTransaction("trId5446146", "Darnyi Tamás", "cID9742746",
                         "apple", 1, 560, "2024.11.03. 23:59:04"),
                 new SalesTransaction("trId9039796", "Kóbór János", "cID8259712",
@@ -138,18 +136,17 @@ class DataSaverTest {
         try (MockedStatic<SalesTransactionRepository> mockedTransactionRepository = Mockito.mockStatic(SalesTransactionRepository.class);
              MockedStatic<FileUtils> mockedFileUtils = Mockito.mockStatic(FileUtils.class)) {
 
-            mockedTransactionRepository.when(SalesTransactionRepository::getSalesTransactionList).thenReturn(testTransactionList);
+            mockedTransactionRepository.when(SalesTransactionRepository::getSalesTransactionList).thenReturn(transactionList);
             mockedFileUtils.when(() -> FileUtils.writeToFile(anyString(), anyString())).thenAnswer(invocation -> null);
 
             DataSaver dataSaver = new DataSaver();
-            dataSaver.saveTransactionsToFile(testTransactionsFilePath);
+            dataSaver.saveTransactionsToFile(transactionsFilePath);
 
             String expectedContent =
                     "trId5446146,2024.11.03. 23:59:04,apple,1,560,Darnyi Tamás,cID9742746\n" +
                             "trId9039796,2024.11.18. 01:02:13,coffee,3,1800,Kóbór János,cID8259712\n" +
                             "trId8765603,2024.11.07. 21:49:51,coffee,3,1800,Thomas Mann,cID2633111\n";
-
-            mockedFileUtils.verify(() -> FileUtils.writeToFile(expectedContent, testTransactionsFilePath), times(1));
+            mockedFileUtils.verify(() -> FileUtils.writeToFile(expectedContent, transactionsFilePath), times(1));
         }
     }
 }

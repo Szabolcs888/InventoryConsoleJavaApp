@@ -8,8 +8,8 @@ import java.util.List;
 
 public class MenuOption4DisplayCustomers {
 
-    public void displayCustomerList(String text) {
+    public void displayCustomerList(String menuMessage) {
         List<Customer> customerList = CustomerRepository.getCustomerList();
-        CustomerDisplayHelper.displayCustomerList(customerList, text);
+        CustomerDisplayHelper.displayCustomerList(customerList, menuMessage);
     }
 }

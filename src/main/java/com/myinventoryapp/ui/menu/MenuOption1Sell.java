@@ -21,8 +21,8 @@ public class MenuOption1Sell {
         this.transactionService = transactionService;
     }
 
-    public void sellProduct(String text) {
-        System.out.println(text);
+    public void sellProduct(String menuMessage) {
+        System.out.println(menuMessage);
         String askAnotherSell;
         String yesOption = "Y";
         do {

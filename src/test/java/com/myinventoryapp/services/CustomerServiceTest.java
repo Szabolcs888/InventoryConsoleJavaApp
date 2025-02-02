@@ -20,18 +20,18 @@ class CustomerServiceTest {
         Product product = new Product("cherry", "pr7860912", 452, 115);
         int quantitySold = 12;
 
-        String expectedResponse = "cID9168098";
+        String expectedCustomerId = "cID9168098";
         CustomerService spyCustomerService = Mockito.spy(new CustomerService());
-        Mockito.doReturn(expectedResponse).when(spyCustomerService).updateRegisteredCustomerPurchases(
+        Mockito.doReturn(expectedCustomerId).when(spyCustomerService).updateRegisteredCustomerPurchases(
                 customerName, product, quantitySold);
 
-        String result = spyCustomerService.handleCustomerTransaction(
+        String customerIdResult = spyCustomerService.handleCustomerTransaction(
                 isRegisteredCustomer, customerName, product, quantitySold);
 
         Mockito.verify(spyCustomerService, times(1)).updateRegisteredCustomerPurchases(
                 customerName, product, quantitySold);
         Mockito.verify(spyCustomerService, never()).registerNewCustomer(anyString(), any(Product.class), anyInt());
-        assertEquals(expectedResponse, result, "The method should return the registered costumer id.");
+        assertEquals(expectedCustomerId, customerIdResult, "The method should return the registered costumer id.");
     }
 
     @Test
@@ -41,35 +41,35 @@ class CustomerServiceTest {
         Product product = new Product("apple", "pr5197140", 588, 132);
         int quantitySold = 7;
 
-        String expectedResponse = "cID8448077";
+        String expectedCustomerId = "cID8448077";
         CustomerService spyCustomerService = Mockito.spy(new CustomerService());
-        Mockito.doReturn(expectedResponse).when(spyCustomerService).registerNewCustomer(
+        Mockito.doReturn(expectedCustomerId).when(spyCustomerService).registerNewCustomer(
                 customerName, product, quantitySold);
 
-        String result = spyCustomerService.handleCustomerTransaction(
+        String customerIdResult = spyCustomerService.handleCustomerTransaction(
                 isRegisteredCustomer, customerName, product, quantitySold);
 
         Mockito.verify(spyCustomerService, never()).updateRegisteredCustomerPurchases(anyString(), any(Product.class), anyInt());
         Mockito.verify(spyCustomerService, times(1)).registerNewCustomer(
                 customerName, product, quantitySold);
-        assertEquals(expectedResponse, result, "The method should return the new costumer ID.");
+        assertEquals(expectedCustomerId, customerIdResult, "The method should return the new costumer ID.");
     }
 
     @Test
     void testUpdateRegisteredCustomerPurchases_GeneratesCorrectCustomerId() {
         String customerName = "Mikhail Bulgakov";
+        String expectedCustomerId = "cID3099022";
         Product product = new Product("pineapple", "pr5711807", 894, 18);
         int quantitySold = 1;
-        Customer customer = new Customer(customerName, "cID3099022", 3600);
+        Customer customer = new Customer(customerName, expectedCustomerId, 3600);
 
         try (MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
             mockedCustomerRepository.when(() -> CustomerRepository.findCustomerByName(customerName)).thenReturn(customer);
 
             CustomerService customerService = new CustomerService();
-            String customerId = customerService.updateRegisteredCustomerPurchases(customerName, product, quantitySold);
+            String customerIdResult = customerService.updateRegisteredCustomerPurchases(customerName, product, quantitySold);
 
-            String expectedCustomerId = "cID3099022";
-            assertEquals(expectedCustomerId, customerId);
+            assertEquals(expectedCustomerId, customerIdResult, "The method should return the correct customer ID.");
             mockedCustomerRepository.verify(() ->
                     CustomerRepository.findCustomerByName(customerName), times(1));
         }
@@ -89,28 +89,10 @@ class CustomerServiceTest {
             CustomerService customerService = new CustomerService();
             customerService.updateRegisteredCustomerPurchases(customerName, product, quantitySold);
 
-            int expectedPurchase = product.getUnitPrice() * quantitySold;
-            int expectedTotalPurchases = initialTotalPurchases + expectedPurchase;
+            int expectedCurrentPurchase = product.getUnitPrice() * quantitySold;
+            int expectedTotalPurchases = initialTotalPurchases + expectedCurrentPurchase;
             assertEquals(expectedTotalPurchases, customer.getTotalPurchases(),
                     "The customer's total purchases should be updated correctly.");
-        }
-    }
-
-    @Test
-    void testUpdateRegisteredCustomerPurchases_ReturnsCorrectCustomerId() {
-        String customerName = "Egerszegi Krisztina";
-        String expectedCustomerId = "cID5794138";
-        Product product = new Product("orange juice", "pr7987615", 870, 89);
-        int quantitySold = 5;
-        Customer customer = new Customer(customerName, expectedCustomerId, 5890);
-
-        try (MockedStatic<CustomerRepository> mockedCustomerRepository = Mockito.mockStatic(CustomerRepository.class)) {
-            mockedCustomerRepository.when(() -> CustomerRepository.findCustomerByName(customerName)).thenReturn(customer);
-
-            CustomerService customerService = new CustomerService();
-            String customerId = customerService.updateRegisteredCustomerPurchases(customerName, product, quantitySold);
-
-            assertEquals(expectedCustomerId, customerId, "The method should return the correct customer ID.");
         }
     }
 
@@ -128,10 +110,10 @@ class CustomerServiceTest {
                     thenAnswer(invocation -> null);
 
             CustomerService customerService = new CustomerService();
-            String customerId = customerService.registerNewCustomer(customerName, product, quantitySold);
+            String customerIdResult = customerService.registerNewCustomer(customerName, product, quantitySold);
 
             String expectedCustomerId = "cID2422151";
-            assertEquals(expectedCustomerId, customerId);
+            assertEquals(expectedCustomerId, customerIdResult, "The method should return the correct customer ID.");
             mockedIdUtils.verify(IdUtils::generateId, times(1));
         }
     }
@@ -150,9 +132,9 @@ class CustomerServiceTest {
                     thenAnswer(invocation -> null);
 
             CustomerService customerService = new CustomerService();
-            String customerId = customerService.registerNewCustomer(customerName, product, quantitySold);
+            String customerIdResult = customerService.registerNewCustomer(customerName, product, quantitySold);
 
-            assertNotNull(customerId, "The customer ID should not be null.");
+            assertNotNull(customerIdResult, "The customer ID should not be null.");
             assertEquals(235 * 2, product.getUnitPrice() * quantitySold,
                     "The total purchase calculation should be correct.");
         }

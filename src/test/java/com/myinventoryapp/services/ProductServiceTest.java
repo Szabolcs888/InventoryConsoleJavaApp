@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 
 class ProductServiceTest {
@@ -51,7 +52,7 @@ class ProductServiceTest {
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class);
              MockedStatic<ProductDisplayHelper> mockedProductDisplayHelper = Mockito.mockStatic(ProductDisplayHelper.class)) {
 
-            mockedIdUtils.when(IdUtils::generateId).thenReturn(5204875);
+            mockedIdUtils.when(IdUtils::generateId).thenReturn(7825102);
             mockedProductRepository.when(() ->
                     ProductRepository.addProduct(any(Product.class))).thenAnswer(invocation -> null);
             mockedProductDisplayHelper.when(() ->
@@ -60,7 +61,7 @@ class ProductServiceTest {
             ProductService productService = new ProductService();
             productService.addNewProduct(productName, unitPrice, quantity);
 
-            String expectedProductId = "pr5204875";
+            String expectedProductId = "pr7825102";
             mockedProductRepository.verify(() -> ProductRepository.addProduct(
                     argThat(product ->
                             product.getProductName().equals(productName) &&
@@ -106,7 +107,6 @@ class ProductServiceTest {
     @Test
     void testDeleteProduct_ConfirmsDeletion() {
         TestUtils.redirectSystemOut();
-
         String productName = "tea";
         Product product = new Product(productName, "pr7236284", 1200, 52);
 
@@ -133,7 +133,6 @@ class ProductServiceTest {
     @Test
     void testDeleteProduct_DoesNotDeleteWhenNotConfirmed() {
         TestUtils.redirectSystemOut();
-
         String productName = "coffee";
         Product product = new Product(productName, "pr5204875", 1800, 120);
 
@@ -150,7 +149,7 @@ class ProductServiceTest {
             mockedErrorHandler.verify(() -> ErrorHandler.getYesOrNoAnswer(
                             contains("Are you sure you want to DELETE the product named " + productName)),
                     times(1));
-            mockedProductRepository.verify(() -> ProductRepository.deleteProduct(product), times(0));
+            mockedProductRepository.verify(() -> ProductRepository.deleteProduct(product), never());
         } finally {
             TestUtils.restoreSystemOut();
         }
@@ -159,7 +158,6 @@ class ProductServiceTest {
     @Test
     void testDeleteProduct_DeletesAndDisplaysConfirmationMessage() {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
-
         Product product = new Product("orange juice", "pr7987615", 870, 89);
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
@@ -184,7 +182,6 @@ class ProductServiceTest {
     @Test
     void testDeleteProduct_AbortsAndDisplaysNoDeletionMessage() {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
-
         Product product = new Product("pineapple", "pr5711807", 894, 1);
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
@@ -233,8 +230,8 @@ class ProductServiceTest {
 
             Mockito.doReturn(quantityModification).when(spyProductService).getQuantityModification(product);
             Mockito.doReturn(newQuantity).when(spyProductService).calculateNewQuantity(product, quantityModification);
-            Mockito.doNothing().when(spyProductService).setNewQuantity(product, newQuantity);
             mockedErrorHandler.when(() -> ErrorHandler.validateNonNegativeQuantity(newQuantity)).thenAnswer(invocation -> null);
+            Mockito.doNothing().when(spyProductService).setNewQuantity(product, newQuantity);
             mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoAfterSellAndUpdateGoodsReceipt(
                     any(Product.class), anyString())).thenAnswer(invocation -> null);
 
@@ -242,9 +239,8 @@ class ProductServiceTest {
 
             Mockito.verify(spyProductService, times(1)).getQuantityModification(product);
             Mockito.verify(spyProductService, times(1)).calculateNewQuantity(product, quantityModification);
-            Mockito.verify(spyProductService, times(1)).calculateNewQuantity(product, quantityModification);
-            Mockito.verify(spyProductService, times(1)).setNewQuantity(product, newQuantity);
             mockedErrorHandler.verify(() -> ErrorHandler.validateNonNegativeQuantity(newQuantity), times(1));
+            Mockito.verify(spyProductService, times(1)).setNewQuantity(product, newQuantity);
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoAfterSellAndUpdateGoodsReceipt(
                     product, "PRODUCT INFORMATION AFTER RECEIPT TRANSACTION:"), times(1));
         }
@@ -259,6 +255,7 @@ class ProductServiceTest {
         int positiveQuantityModification = 35;
         int newQuantity1 = quantity + negativeQuantityModification;
         int newQuantity2 = quantity + positiveQuantityModification;
+
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class);
              MockedStatic<ProductDisplayHelper> mockedProductDisplayHelper = Mockito.mockStatic(ProductDisplayHelper.class)) {
             ProductService spyProductService = Mockito.spy(new ProductService());
@@ -266,23 +263,23 @@ class ProductServiceTest {
             Mockito.doReturn(negativeQuantityModification, positiveQuantityModification)
                     .when(spyProductService).getQuantityModification(product);
             Mockito.doReturn(newQuantity1).when(spyProductService).calculateNewQuantity(product, negativeQuantityModification);
-            Mockito.doReturn(newQuantity2).when(spyProductService).calculateNewQuantity(product, positiveQuantityModification);
-            Mockito.doNothing().when(spyProductService).setNewQuantity(product, newQuantity1);
-            Mockito.doNothing().when(spyProductService).setNewQuantity(product, newQuantity2);
             mockedErrorHandler.when(() -> ErrorHandler.validateNonNegativeQuantity(anyInt())).thenAnswer(invocation -> null);
+            Mockito.doNothing().when(spyProductService).setNewQuantity(product, newQuantity1);
+            Mockito.doReturn(newQuantity2).when(spyProductService).calculateNewQuantity(product, positiveQuantityModification);
+            Mockito.doNothing().when(spyProductService).setNewQuantity(product, newQuantity2);
             mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductInfoAfterSellAndUpdateGoodsReceipt(
                     any(Product.class), anyString())).thenAnswer(invocation -> null);
 
             spyProductService.updateProductQuantity(product);
 
             // There are so many verifications because the test runs two iterations.
-            Mockito.verify(spyProductService, times(0)).setNewQuantity(product, newQuantity1);
-            Mockito.verify(spyProductService, times(1)).setNewQuantity(product, newQuantity2);
-            mockedErrorHandler.verify(() -> ErrorHandler.validateNonNegativeQuantity(newQuantity1), times(1));
-            mockedErrorHandler.verify(() -> ErrorHandler.validateNonNegativeQuantity(newQuantity2), times(1));
             Mockito.verify(spyProductService, times(2)).getQuantityModification(product);
             Mockito.verify(spyProductService, times(1)).calculateNewQuantity(product, negativeQuantityModification);
+            mockedErrorHandler.verify(() -> ErrorHandler.validateNonNegativeQuantity(newQuantity1), times(1));
+            Mockito.verify(spyProductService, times(0)).setNewQuantity(product, newQuantity1);
             Mockito.verify(spyProductService, times(1)).calculateNewQuantity(product, positiveQuantityModification);
+            mockedErrorHandler.verify(() -> ErrorHandler.validateNonNegativeQuantity(newQuantity2), times(1));
+            Mockito.verify(spyProductService, times(1)).setNewQuantity(product, newQuantity2);
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoAfterSellAndUpdateGoodsReceipt(
                     product, "PRODUCT INFORMATION AFTER RECEIPT TRANSACTION:"), times(1));
         }
@@ -293,20 +290,21 @@ class ProductServiceTest {
         String productName = "lemon";
         Product product = new Product(productName, "pr6634365", 880, 0);
 
-        int expectedQuantityModification = 19;
+        int quantityModification = 19;
+
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
-            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(expectedQuantityModification);
+            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(quantityModification);
 
             ProductService productService = new ProductService();
-            int result = productService.getQuantityModification(product);
+            int quantityToBeModifiedResult = productService.getQuantityModification(product);
 
-            mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(
-                            "\nBy how much should we increase or decrease the " + productName + " quantity?"),
-                    times(0));
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(
                             "\nBy how much should we increase the " + productName + " quantity?"),
                     times(1));
-            assertEquals(expectedQuantityModification, result,
+            mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(
+                            "\nBy how much should we increase or decrease the " + productName + " quantity?"),
+                    times(0));
+            assertEquals(quantityModification, quantityToBeModifiedResult,
                     "The returned quantity modification should match the mocked value.");
         }
     }
@@ -316,12 +314,13 @@ class ProductServiceTest {
         String productName = "cocoa";
         Product product = new Product(productName, "pr7553549", 235, 35);
 
-        int expectedQuantityModification = 5;
+        int quantityModification = 5;
+
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
-            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(expectedQuantityModification);
+            mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(quantityModification);
 
             ProductService productService = new ProductService();
-            int result = productService.getQuantityModification(product);
+            int quantityToBeModifiedResult = productService.getQuantityModification(product);
 
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(
                             "\nBy how much should we increase or decrease the " + productName + " quantity?"),
@@ -329,7 +328,7 @@ class ProductServiceTest {
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(
                             "\nBy how much should we increase the " + productName + " quantity?"),
                     times(0));
-            assertEquals(expectedQuantityModification, result,
+            assertEquals(quantityModification, quantityToBeModifiedResult,
                     "The returned quantity modification should match the mocked value.");
         }
     }
@@ -340,11 +339,11 @@ class ProductServiceTest {
         Product product = new Product("apple", "pr5197140", 560, 25);
 
         ProductService productService = new ProductService();
-        int result = productService.calculateNewQuantity(product, quantityModification);
+        int newQuantityResult = productService.calculateNewQuantity(product, quantityModification);
 
-        int expectedResult = 40;
-        assertEquals(expectedResult, result,
-                "The new quantity should be " + expectedResult + " when modification is " + quantityModification + ".");
+        int expectedNewQuantity = 40;
+        assertEquals(expectedNewQuantity, newQuantityResult,
+                "The new quantity should be " + expectedNewQuantity + " when modification is " + quantityModification + ".");
     }
 
     @Test
@@ -353,11 +352,11 @@ class ProductServiceTest {
         Product product = new Product("pear", "pr4270613", 675, 92);
 
         ProductService productService = new ProductService();
-        int result = productService.calculateNewQuantity(product, quantityModification);
+        int newQuantityResult = productService.calculateNewQuantity(product, quantityModification);
 
-        int expectedResult = 60;
-        assertEquals(expectedResult, result,
-                "The new quantity should be " + expectedResult + " when modification is " + quantityModification + ".");
+        int expectedNewQuantity = 60;
+        assertEquals(expectedNewQuantity, newQuantityResult,
+                "The new quantity should be " + expectedNewQuantity + " when modification is " + quantityModification + ".");
     }
 
     @Test
@@ -366,11 +365,11 @@ class ProductServiceTest {
         Product product = new Product("banana", "pr5223508", 720, 102);
 
         ProductService productService = new ProductService();
-        int result = productService.calculateNewQuantity(product, quantityModification);
+        int newQuantityResult = productService.calculateNewQuantity(product, quantityModification);
 
-        int expectedResult = 102;
-        assertEquals(expectedResult, result,
-                "The new quantity should be " + expectedResult + " when modification is " + quantityModification + ".");
+        int expectedNewQuantity = 102;
+        assertEquals(expectedNewQuantity, newQuantityResult,
+                "The new quantity should be " + expectedNewQuantity + " when modification is " + quantityModification + ".");
     }
 
     @Test
@@ -379,11 +378,11 @@ class ProductServiceTest {
         Product product = new Product("coffee", "pr5204875", 1800, 92);
 
         ProductService productService = new ProductService();
-        int result = productService.calculateNewQuantity(product, quantityModification);
+        int newQuantityResult = productService.calculateNewQuantity(product, quantityModification);
 
-        int expectedResult = -65;
-        assertEquals(expectedResult, result,
-                "The new quantity should be " + expectedResult + " when modification is " + quantityModification + ".");
+        int expectedNewQuantity = -65;
+        assertEquals(expectedNewQuantity, newQuantityResult,
+                "The new quantity should be " + expectedNewQuantity + " when modification is " + quantityModification + ".");
     }
 
     @Test
@@ -392,17 +391,16 @@ class ProductServiceTest {
         Product product = new Product("apple", "pr5197140", 1800, Integer.MAX_VALUE - 1);
 
         ProductService productService = new ProductService();
-        int result = productService.calculateNewQuantity(product, quantityModification);
+        int newQuantityResult = productService.calculateNewQuantity(product, quantityModification);
 
-        int expectedResult = Integer.MAX_VALUE;
-        assertEquals(expectedResult, result,
-                "The new quantity should be " + expectedResult + " when modification is " + quantityModification + ".");
+        int expectedNewQuantity = Integer.MAX_VALUE;
+        assertEquals(expectedNewQuantity, newQuantityResult,
+                "The new quantity should be " + expectedNewQuantity + " when modification is " + quantityModification + ".");
     }
 
     @Test
     void testSetNewQuantity_UpdatesQuantity() {
         TestUtils.redirectSystemOut();
-
         int newQuantity = 102;
         Product product = new Product("tea", "pr7236284", 1200, 52);
 
@@ -417,7 +415,6 @@ class ProductServiceTest {
     @Test
     void testSetNewQuantity_PrintsMessage() {
         ByteArrayOutputStream outputStream = TestUtils.redirectSystemOut();
-
         int newQuantity = 93;
         Product product = new Product("coffee", "pr5204875", 1800, 125);
 

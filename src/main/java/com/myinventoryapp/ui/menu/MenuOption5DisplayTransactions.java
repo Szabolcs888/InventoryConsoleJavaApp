@@ -8,8 +8,8 @@ import java.util.List;
 
 public class MenuOption5DisplayTransactions {
 
-    public void displayTransactionList(String text) {
+    public void displayTransactionList(String menuMessage) {
         List<SalesTransaction> transactionList = SalesTransactionRepository.getSalesTransactionList();
-        TransactionDisplayHelper.displayTransactionList(transactionList, text);
+        TransactionDisplayHelper.displayTransactionList(transactionList, menuMessage);
     }
 }

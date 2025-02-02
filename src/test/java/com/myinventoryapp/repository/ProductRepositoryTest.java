@@ -62,10 +62,10 @@ class ProductRepositoryTest {
         ProductRepository.addProduct(product1);
         ProductRepository.addProduct(product2);
 
-        Product result = ProductRepository.findProductByName("coffee");
+        Product foundProductByNameResult = ProductRepository.findProductByName("coffee");
 
-        assertNotNull(result, "Expected to find the product 'coffee'.");
-        assertEquals(product2, result);
+        assertNotNull(foundProductByNameResult, "Expected to find the product 'coffee'.");
+        assertEquals(product2, foundProductByNameResult);
     }
 
     @Test
@@ -73,10 +73,10 @@ class ProductRepositoryTest {
         Product product = new Product("orange juice", "pr7987615", 870, 89);
         ProductRepository.addProduct(product);
 
-        Product result = ProductRepository.findProductByName("oRAngE JUiCe");
+        Product foundProductByNameResult = ProductRepository.findProductByName("oRAngE JUiCe");
 
-        assertNotNull(result, "Expected to find the product 'orange juice' with case-insensitive search.");
-        assertEquals(product, result, "The returned product does not match the expected one.");
+        assertNotNull(foundProductByNameResult, "Expected to find the product 'orange juice' with case-insensitive search.");
+        assertEquals(product, foundProductByNameResult, "The returned product does not match the expected one.");
     }
 
     @Test
@@ -84,9 +84,9 @@ class ProductRepositoryTest {
         Product product = new Product("orange juice", "pr7987615", 870, 89);
         ProductRepository.addProduct(product);
 
-        Product result = ProductRepository.findProductByName("fruit juice");
+        Product foundProductByNameResult = ProductRepository.findProductByName("fruit juice");
 
-        assertNull(result, "Expected null when the product name does not exist.");
+        assertNull(foundProductByNameResult, "Expected null when the product name does not exist.");
     }
 
     @Test
@@ -96,10 +96,11 @@ class ProductRepositoryTest {
         ProductRepository.addProduct(product1);
         ProductRepository.addProduct(product2);
 
-        Product result = ProductRepository.findProductByName("pineapple");
+        Product foundProductByNameResult = ProductRepository.findProductByName("pineapple");
 
-        assertNotNull(result, "Expected to find the first product named 'pineapple'.");
-        assertEquals(product1, result, "The returned product does not match the first match.");
+        assertNotNull(foundProductByNameResult, "Expected to find the first product named 'pineapple'.");
+        assertEquals(product1, foundProductByNameResult, "The returned product does not match the first match.");
+        assertNotEquals(product2, foundProductByNameResult, "The returned product match the second match.");
     }
 
     @Test

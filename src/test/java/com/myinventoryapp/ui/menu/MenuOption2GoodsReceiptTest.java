@@ -55,7 +55,6 @@ class MenuOption2GoodsReceiptTest {
             Mockito.doReturn(inputProductName).when(spyMenuOption2GoodsReceipt).getProductName();
             Mockito.doReturn(true).when(spyMenuOption2GoodsReceipt).isProductInList(inputProductName);
             Mockito.doNothing().when(spyMenuOption2GoodsReceipt).handleProductIfInList(inputProductName);
-            Mockito.doNothing().when(spyMenuOption2GoodsReceipt).handleNewProductAddition(inputProductName);
             mockedErrorHandler.when(() -> ErrorHandler.getYesOrNoAnswer(anyString())).thenReturn("N");
 
             spyMenuOption2GoodsReceipt.goodsReceipt("\n-RECEIVE PRODUCT MENU-\n");
@@ -113,7 +112,6 @@ class MenuOption2GoodsReceiptTest {
 
             Mockito.doReturn(inputProductName).when(spyMenuOption2GoodsReceipt).getProductName();
             Mockito.doReturn(false).when(spyMenuOption2GoodsReceipt).isProductInList(inputProductName);
-            Mockito.doNothing().when(spyMenuOption2GoodsReceipt).handleProductIfInList(inputProductName);
             Mockito.doNothing().when(spyMenuOption2GoodsReceipt).handleNewProductAddition(inputProductName);
             mockedErrorHandler.when(() -> ErrorHandler.getYesOrNoAnswer(anyString())).thenReturn("N");
 
@@ -142,7 +140,6 @@ class MenuOption2GoodsReceiptTest {
 
             Mockito.doReturn(firstInputProductName, secondInputProductName).when(spyMenuOption2GoodsReceipt).getProductName();
             Mockito.doReturn(false).when(spyMenuOption2GoodsReceipt).isProductInList(firstInputProductName);
-            Mockito.doNothing().when(spyMenuOption2GoodsReceipt).handleProductIfInList(firstInputProductName);
             Mockito.doNothing().when(spyMenuOption2GoodsReceipt).handleNewProductAddition(firstInputProductName);
             mockedErrorHandler.when(() -> ErrorHandler.getYesOrNoAnswer(anyString())).thenReturn("Y").thenReturn("N");
             Mockito.doReturn(false).when(spyMenuOption2GoodsReceipt).isProductInList(secondInputProductName);
@@ -178,9 +175,9 @@ class MenuOption2GoodsReceiptTest {
             mockedValidationUtils.when(() -> ValidationUtils.isValidName(validInputProductName)).thenReturn(true);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            String resultInputProductName = menuOption2GoodsReceipt.getProductName();
+            String inputProductNameResult = menuOption2GoodsReceipt.getProductName();
 
-            assertEquals(validInputProductName, resultInputProductName);
+            assertEquals(validInputProductName, inputProductNameResult);
             mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("Please enter the product name:"),
                     times(1));
             mockedErrorHandler.verify(() -> ErrorHandler.validateName(validInputProductName),
@@ -207,9 +204,9 @@ class MenuOption2GoodsReceiptTest {
             mockedValidationUtils.when(() -> ValidationUtils.isValidName(validInputProductName)).thenReturn(true);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            String resultInputProductName = menuOption2GoodsReceipt.getProductName();
+            String inputProductNameResult = menuOption2GoodsReceipt.getProductName();
 
-            assertEquals(validInputProductName, resultInputProductName);
+            assertEquals(validInputProductName, inputProductNameResult);
             mockedUserInputUtils.verify(() -> UserInputUtils.readFromUser("Please enter the product name:"),
                     times(2));
             mockedErrorHandler.verify(() -> ErrorHandler.validateName(invalidInputProductName),
@@ -232,9 +229,9 @@ class MenuOption2GoodsReceiptTest {
             mockedProductRepository.when(() -> ProductRepository.findProductByName(anyString())).thenReturn(product);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            boolean resultIsProductInList = menuOption2GoodsReceipt.isProductInList(inputProductName);
+            boolean isProductInListResult = menuOption2GoodsReceipt.isProductInList(inputProductName);
 
-            assertTrue(resultIsProductInList);
+            assertTrue(isProductInListResult);
             mockedProductRepository.verify(() -> ProductRepository.findProductByName(inputProductName),
                     times(1));
         }
@@ -248,9 +245,9 @@ class MenuOption2GoodsReceiptTest {
             mockedProductRepository.when(() -> ProductRepository.findProductByName(anyString())).thenReturn(null);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            boolean resultIsProductInList = menuOption2GoodsReceipt.isProductInList(inputProductName);
+            boolean isProductInListResult = menuOption2GoodsReceipt.isProductInList(inputProductName);
 
-            assertFalse(resultIsProductInList);
+            assertFalse(isProductInListResult);
             mockedProductRepository.verify(() -> ProductRepository.findProductByName(inputProductName),
                     times(1));
         }
@@ -286,9 +283,9 @@ class MenuOption2GoodsReceiptTest {
             mockedErrorHandler.when(() -> ErrorHandler.validatePrice(unitPrice)).thenAnswer(invocation -> null);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            int resultUnitPrice = menuOption2GoodsReceipt.getProductPrice();
+            int unitPriceResult = menuOption2GoodsReceipt.getProductPrice();
 
-            assertEquals(unitPrice, resultUnitPrice);
+            assertEquals(unitPrice, unitPriceResult);
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the product price:"),
                     times(1));
             mockedErrorHandler.verify(() -> ErrorHandler.validatePrice(unitPrice), times(1));
@@ -298,7 +295,7 @@ class MenuOption2GoodsReceiptTest {
     @Test
     void testGetProductPrice_InvalidPriceThenValidPrice() {
         int invalidUnitPrice = -115;
-        int validUnitPrice = 725;
+        int validUnitPrice = 570;
 
         try (MockedStatic<ErrorHandler> mockedErrorHandler = Mockito.mockStatic(ErrorHandler.class)) {
 
@@ -308,9 +305,9 @@ class MenuOption2GoodsReceiptTest {
             mockedErrorHandler.when(() -> ErrorHandler.validatePrice(validUnitPrice)).thenAnswer(invocation -> null);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            int resultUnitPrice = menuOption2GoodsReceipt.getProductPrice();
+            int unitPriceResult = menuOption2GoodsReceipt.getProductPrice();
 
-            assertEquals(validUnitPrice, resultUnitPrice);
+            assertEquals(validUnitPrice, unitPriceResult);
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the product price:"),
                     times(2));
             mockedErrorHandler.verify(() -> ErrorHandler.validatePrice(invalidUnitPrice), times(1));
@@ -328,9 +325,9 @@ class MenuOption2GoodsReceiptTest {
             mockedErrorHandler.when(() -> ErrorHandler.validateQuantity(quantity)).thenAnswer(invocation -> null);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            int resultQuantity = menuOption2GoodsReceipt.getProductQuantity();
+            int quantityResult = menuOption2GoodsReceipt.getProductQuantity();
 
-            assertEquals(quantity, resultQuantity);
+            assertEquals(quantity, quantityResult);
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the product quantity:"),
                     times(1));
             mockedErrorHandler.verify(() -> ErrorHandler.validateQuantity(quantity), times(1));
@@ -350,9 +347,9 @@ class MenuOption2GoodsReceiptTest {
             mockedErrorHandler.when(() -> ErrorHandler.validateQuantity(validQuantity)).thenAnswer(invocation -> null);
 
             MenuOption2GoodsReceipt menuOption2GoodsReceipt = MenuOptionFactory.createMenuOption2GoodsReceipt();
-            int resultQuantity = menuOption2GoodsReceipt.getProductQuantity();
+            int quantityResult = menuOption2GoodsReceipt.getProductQuantity();
 
-            assertEquals(validQuantity, resultQuantity);
+            assertEquals(validQuantity, quantityResult);
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the product quantity:"),
                     times(2));
             mockedErrorHandler.verify(() -> ErrorHandler.validateQuantity(invalidQuantity), times(1));
@@ -361,7 +358,7 @@ class MenuOption2GoodsReceiptTest {
     }
 
     @Test
-    void testHandleProductIfInList_ProductIfInList() {
+    void testHandleProductIfInList_ProductInList() {
         String inputProductName = "cherry";
         Product product = new Product("cherry", "pr7860912", 452, 115);
 
@@ -373,8 +370,6 @@ class MenuOption2GoodsReceiptTest {
             mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayExistingProductInfo(product)).
                     thenAnswer(invocation -> null);
             Mockito.doNothing().when(spyMenuOption2GoodsReceipt).askUserForProductAction(product);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).
-                    thenAnswer(invocation -> null);
 
             spyMenuOption2GoodsReceipt.handleProductIfInList(inputProductName);
 
@@ -396,9 +391,6 @@ class MenuOption2GoodsReceiptTest {
             MenuOption2GoodsReceipt spyMenuOption2GoodsReceipt = Mockito.spy(MenuOptionFactory.createMenuOption2GoodsReceipt());
 
             mockedProductRepository.when(() -> ProductRepository.findProductByName(anyString())).thenReturn(null);
-            mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayExistingProductInfo(any(Product.class))).
-                    thenAnswer(invocation -> null);
-            Mockito.doNothing().when(spyMenuOption2GoodsReceipt).askUserForProductAction(any(Product.class));
             mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductNotFoundMessage(anyString())).
                     thenAnswer(invocation -> null);
 
@@ -424,7 +416,6 @@ class MenuOption2GoodsReceiptTest {
 
             mockedErrorHandler.when(() -> ErrorHandler.getYesOrNoOrDeleteAnswer(anyString())).thenReturn(yesModificationOption);
             Mockito.doNothing().when(spyMenuOption2GoodsReceipt).askAndUpdateProductQuantity(any(Product.class));
-            Mockito.doNothing().when(mockProductService).deleteProduct(any(Product.class));
 
             spyMenuOption2GoodsReceipt.askUserForProductAction(product);
 
@@ -447,8 +438,6 @@ class MenuOption2GoodsReceiptTest {
             MenuOption2GoodsReceipt spyMenuOption2GoodsReceipt = Mockito.spy(new MenuOption2GoodsReceipt(mockProductService));
 
             mockedErrorHandler.when(() -> ErrorHandler.getYesOrNoOrDeleteAnswer(anyString())).thenReturn(noModificationOption);
-            Mockito.doNothing().when(spyMenuOption2GoodsReceipt).askAndUpdateProductQuantity(any(Product.class));
-            Mockito.doNothing().when(mockProductService).deleteProduct(any(Product.class));
 
             spyMenuOption2GoodsReceipt.askUserForProductAction(product);
 
@@ -471,7 +460,6 @@ class MenuOption2GoodsReceiptTest {
             MenuOption2GoodsReceipt spyMenuOption2GoodsReceipt = Mockito.spy(new MenuOption2GoodsReceipt(mockProductService));
 
             mockedErrorHandler.when(() -> ErrorHandler.getYesOrNoOrDeleteAnswer(anyString())).thenReturn(removeProductOption);
-            Mockito.doNothing().when(spyMenuOption2GoodsReceipt).askAndUpdateProductQuantity(any(Product.class));
             Mockito.doNothing().when(mockProductService).deleteProduct(any(Product.class));
 
             spyMenuOption2GoodsReceipt.askUserForProductAction(product);

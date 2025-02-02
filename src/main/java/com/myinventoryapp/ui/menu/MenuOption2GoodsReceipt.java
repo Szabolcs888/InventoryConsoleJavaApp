@@ -16,8 +16,8 @@ public class MenuOption2GoodsReceipt {
         this.productService = productService;
     }
 
-    public void goodsReceipt(String text) {
-        System.out.println(text);
+    public void goodsReceipt(String menuMessage) {
+        System.out.println(menuMessage);
         String inputProductName;
         String askAddOrModifyProduct;
         do {

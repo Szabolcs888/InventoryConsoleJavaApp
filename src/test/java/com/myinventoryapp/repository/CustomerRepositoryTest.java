@@ -64,10 +64,10 @@ class CustomerRepositoryTest {
         CustomerRepository.addCustomer(customer1);
         CustomerRepository.addCustomer(customer2);
 
-        Customer result = CustomerRepository.findCustomerByName("Kovács Ágnes");
+        Customer foundCustomerByNameResult = CustomerRepository.findCustomerByName("Kovács Ágnes");
 
-        assertNotNull(result, "Expected to find the customer 'Kovács Ágnes'.");
-        assertEquals(customer2, result);
+        assertNotNull(foundCustomerByNameResult, "Expected to find the customer 'Kovács Ágnes'.");
+        assertEquals(customer2, foundCustomerByNameResult);
     }
 
     @Test
@@ -75,10 +75,10 @@ class CustomerRepositoryTest {
         Customer customer = new Customer("Zsanett", "cID3551298", 35760);
         CustomerRepository.addCustomer(customer);
 
-        Customer result = CustomerRepository.findCustomerByName("zSanETt");
+        Customer foundCustomerByNameResult = CustomerRepository.findCustomerByName("zSanETt");
 
-        assertNotNull(result, "Expected to find the customer 'Zsanett' with case-insensitive search.");
-        assertEquals(customer, result, "The returned customer does not match the expected one.");
+        assertNotNull(foundCustomerByNameResult, "Expected to find the customer 'Zsanett' with case-insensitive search.");
+        assertEquals(customer, foundCustomerByNameResult, "The returned customer does not match the expected one.");
     }
 
     @Test
@@ -86,9 +86,9 @@ class CustomerRepositoryTest {
         Customer customer = new Customer("Thomas Mann", "cID2633111", 5400);
         CustomerRepository.addCustomer(customer);
 
-        Customer result = CustomerRepository.findCustomerByName("Daniel Keyes");
+        Customer foundCustomerByNameResult = CustomerRepository.findCustomerByName("Daniel Keyes");
 
-        assertNull(result, "Expected null when the customer name does not exist.");
+        assertNull(foundCustomerByNameResult, "Expected null when the customer name does not exist.");
     }
 
     @Test
@@ -98,9 +98,10 @@ class CustomerRepositoryTest {
         CustomerRepository.addCustomer(customer1);
         CustomerRepository.addCustomer(customer2);
 
-        Customer result = CustomerRepository.findCustomerByName("Egerszegi Krisztina");
+        Customer foundCustomerByNameResult = CustomerRepository.findCustomerByName("Egerszegi Krisztina");
 
-        assertNotNull(result, "Expected to find the first customer named 'Egerszegi Krisztina'.");
-        assertEquals(customer1, result, "The returned customer does not match the first match.");
+        assertNotNull(foundCustomerByNameResult, "Expected to find the first customer named 'Egerszegi Krisztina'.");
+        assertEquals(customer1, foundCustomerByNameResult, "The returned customer does not match the first match.");
+        assertNotEquals(customer2, foundCustomerByNameResult, "The returned customer match the second match.");
     }
 }
