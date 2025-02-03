@@ -89,7 +89,7 @@ public class MenuOption1Sell {
         int availableQuantity = product.getQuantity();
         while (availableQuantity - quantitySold < 0 || quantitySold < 1) {
             quantitySold = ErrorHandler.getValidNumber("\nPlease enter the quantity to be sold:");
-            ProductDisplayHelper.displayProductQuantityErrorMessage(product, availableQuantity, quantitySold);
+            ProductDisplayHelper.displayProductQuantityErrorMessage(product, quantitySold);
         }
         return quantitySold;
     }

@@ -378,7 +378,7 @@ class MenuOption1SellTest {
 
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(quantitySold);
             mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
-                    any(Product.class), anyInt(), anyInt())).thenAnswer(invocation -> null);
+                    any(Product.class), anyInt())).thenAnswer(invocation -> null);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             int quantitySoldResult = menuOption1Sell.getQuantitySold(product);
@@ -387,7 +387,7 @@ class MenuOption1SellTest {
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the quantity to be sold:"),
                     times(1));
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
-                    product, 35, quantitySold), times(1));
+                    product, quantitySold), times(1));
         }
     }
 
@@ -403,7 +403,7 @@ class MenuOption1SellTest {
             mockedErrorHandler.when(() -> ErrorHandler.getValidNumber(anyString())).thenReturn(invalidQuantitySold).
                     thenReturn(validQuantitySold);
             mockedProductDisplayHelper.when(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
-                    any(Product.class), anyInt(), anyInt())).thenAnswer(invocation -> null);
+                    any(Product.class), anyInt())).thenAnswer(invocation -> null);
 
             MenuOption1Sell menuOption1Sell = MenuOptionFactory.createMenuOption1Sell();
             int quantitySoldResult = menuOption1Sell.getQuantitySold(product);
@@ -412,9 +412,9 @@ class MenuOption1SellTest {
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber("\nPlease enter the quantity to be sold:"),
                     times(2));
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
-                    product, 35, invalidQuantitySold), times(1));
+                    product, invalidQuantitySold), times(1));
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductQuantityErrorMessage(
-                    product, 35, validQuantitySold), times(1));
+                    product, validQuantitySold), times(1));
         }
     }
 

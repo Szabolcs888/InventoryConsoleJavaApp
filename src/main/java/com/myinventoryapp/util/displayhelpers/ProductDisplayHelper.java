@@ -12,8 +12,8 @@ public final class ProductDisplayHelper {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
-    public static void displayProductList(List<Product> productList, String text) {
-        System.out.println(text);
+    public static void displayProductList(List<Product> productList, String menuMessage) {
+        System.out.println(menuMessage);
         if (productList.isEmpty()) {
             System.out.println("There are currently no products in the inventory!");
         } else {
@@ -27,9 +27,9 @@ public final class ProductDisplayHelper {
         System.out.println();
     }
 
-    private static void displayProductInfo(
-            String text, String productName, String productId, int unitPrice, int quantity) {
-        System.out.println(Colors.GREEN.getColorCode() + "\n" + text + Colors.RESET.getColorCode());
+    static void displayProductInfo(
+            String productInfoText, String productName, String productId, int unitPrice, int quantity) {
+        System.out.println(Colors.GREEN.getColorCode() + "\n" + productInfoText + Colors.RESET.getColorCode());
         System.out.println("Product name: " + productName +
                 ", Product ID: " + productId +
                 ", Unit price: " + unitPrice + " HUF" +
@@ -54,11 +54,12 @@ public final class ProductDisplayHelper {
         System.out.println();
     }
 
-    public static void displayProductQuantityErrorMessage(Product product, int availableQuantity, int quantitySold) {
+    public static void displayProductQuantityErrorMessage(Product product, int quantitySold) {
         int zeroValue = 0;
         int minQuantityValue = 1;
+        int availableQuantity = product.getQuantity();
         if (availableQuantity - quantitySold < zeroValue) {
-            System.out.println(Colors.RED.getColorCode() + "\nThere are a total of " + product.getQuantity() + " " +
+            System.out.println(Colors.RED.getColorCode() + "\nThere are a total of " + availableQuantity + " " +
                     product.getProductName() + " in stock, you cannot sell more than that!" +
                     Colors.RESET.getColorCode());
         }
@@ -73,9 +74,9 @@ public final class ProductDisplayHelper {
                 product.getProductName(), product.getProductId(), product.getUnitPrice(), product.getQuantity());
     }
 
-    public static void displayProductInfoAfterSellAndUpdateGoodsReceipt(Product product, String text) {
+    public static void displayProductInfoAfterSellAndUpdateGoodsReceipt(Product product, String productInfoText) {
         displayProductInfo(
-                text, product.getProductName(), product.getProductId(), product.getUnitPrice(), product.getQuantity());
+                productInfoText, product.getProductName(), product.getProductId(), product.getUnitPrice(), product.getQuantity());
     }
 
     public static void displayExistingProductInfo(Product product) {
