@@ -22,16 +22,11 @@ public final class IdUtils {
         int id;
         do {
             id = random.nextInt(1_000_000, 9_999_999) + 1;
-        } while (isIdExisting(id));
+        } while (existingIds().contains(id));
         return id;
     }
 
-    private static boolean isIdExisting(int id) {
-        List<Integer> alreadyExistingIds = readExistingIdsFromLists();
-        return alreadyExistingIds.contains(id);
-    }
-
-    private static List<Integer> readExistingIdsFromLists() {
+    private static List<Integer> existingIds() {
         List<Integer> alreadyExistingIds = new ArrayList<>();
 
         List<Product> productList = ProductRepository.getProductList();

@@ -21,3 +21,4 @@ Mikhail Bulgakov,6360,cID3099022
 Freddie Mercury,2640,cID6925498
 Kóbór János,5400,cID8259712
 Kodály Zoltán,2160,cID6401082
+Kölcsey Ferenc,2625,cID6709078

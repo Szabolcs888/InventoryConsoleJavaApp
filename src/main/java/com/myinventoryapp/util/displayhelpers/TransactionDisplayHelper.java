@@ -13,8 +13,8 @@ public final class TransactionDisplayHelper {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
-    public static void displayTransactionList(List<SalesTransaction> transactionList, String text) {
-        System.out.println(text);
+    public static void displayTransactionList(List<SalesTransaction> transactionList, String menuMessage) {
+        System.out.println(menuMessage);
         if (transactionList.isEmpty()) {
             System.out.println("There are currently no transactions in the inventory!");
         } else {

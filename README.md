@@ -1,13 +1,13 @@
 # Inventory console Java app
 
-This is an inventory management console application created as part of hands-on project. In terms of its functions, it registers inventory app receipts and cancellations, new and existing customers, and purchases. The data is read from files and is currently organized into lists, but there are also plans to integrate the database and develop a simple frontend interface. The information displayed on the console is colored.
+This is a simple inventory management console application developed as a practice project. In terms of functionality, it registers the intake and deletion of stock, new and existing customers, and purchases. The data is read from files, and the information displayed on the console is colored. During the project, I had the opportunity to practice unit testing, which, to the best of my knowledge, ensures full coverage.
 
-All unit tests will be uploaded soon.
+Integration and end-to-end tests will also be uploaded soon.
 
 #
 #
 
-Ez egy készletnyilvántartó konzolalkalmazás, amely egy gyakorlóprojekt keretében jött létre. A funkcióit tekintve regisztrálja az árukészlet bevételezését, törlését, az új és meglévő ügyfeleket és a vásárlásokat. Az adatok fájlokból kerülnek beolvasásra és egyelőre még listákba vannak szervezve, de tervben van az adatbázis integrálása és egy egyszerű frontend felület fejlesztése is. A konzolon megjelenő információk színesek.
+Ez egy egyszerű készletnyilvántartó konzolalkalmazás, amely egy gyakorlóprojekt keretében jött létre. A funkcióit tekintve regisztrálja az árukészlet bevételezését, törlését, az új és meglévő ügyfeleket és a vásárlásokat. Az adatok fájlokból kerülnek beolvasásra és a konzolon megjelenő információk színesek. A projekt során lehetőségem nyílt a unit tesztelés gyakorlására is, amely legjobb tudásom szerint teljes lefedettséget biztosít.
 
-Hamarosan valamennyi unit teszt is feltöltésre kerül.
+Hamarosan az integrációs és az end-to-end tesztek is feltöltésre kerülnek.
   
