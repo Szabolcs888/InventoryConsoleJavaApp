@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerDisplayHelperTest {
-    private final String menuMessage = "\n-DISPLAY CUSTOMERS MENU-\n";
+    private final static String MENU_MESSAGE = "\n-DISPLAY CUSTOMERS MENU-\n";
 
     private ByteArrayOutputStream outputStream;
 
@@ -32,7 +32,7 @@ class CustomerDisplayHelperTest {
     void testDisplayCustomerList_PrintsMenuMessage() {
         List<Customer> customerList = Collections.emptyList();
 
-        CustomerDisplayHelper.displayCustomerList(customerList, menuMessage);
+        CustomerDisplayHelper.displayCustomerList(customerList, MENU_MESSAGE);
 
         String expectedMessage = "-DISPLAY CUSTOMERS MENU-";
         String output = outputStream.toString();
@@ -44,7 +44,7 @@ class CustomerDisplayHelperTest {
     void testDisplayCustomerList_PrintsEmptyListMessage() {
         List<Customer> customerList = Collections.emptyList();
 
-        CustomerDisplayHelper.displayCustomerList(customerList, menuMessage);
+        CustomerDisplayHelper.displayCustomerList(customerList, MENU_MESSAGE);
 
         String expectedMessage = "There are currently no registered customers in the inventory!";
         String output = outputStream.toString();
@@ -60,7 +60,7 @@ class CustomerDisplayHelperTest {
                 new Customer("Szabó Tibor", "cID6067122", 12608)
         );
 
-        CustomerDisplayHelper.displayCustomerList(customerList, menuMessage);
+        CustomerDisplayHelper.displayCustomerList(customerList, MENU_MESSAGE);
 
         String expectedMessage = "There are a total of " + customerList.size() + " registered customers in the inventory:";
         String output = outputStream.toString();

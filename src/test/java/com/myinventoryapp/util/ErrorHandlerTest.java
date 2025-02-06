@@ -18,6 +18,7 @@ class ErrorHandlerTest {
     private static final String YES_OR_NO_QUESTION = "Would you like to add a new product or modify the quantity of an existing one? (Y/N)";
     private static final String YES_OR_NO_OR_DELETE_QUESTION = "Would you like to add to or subtract from the product quantity? (Y/N) " +
             "To delete from the inventory, press \"D\"!";
+
     private ByteArrayOutputStream outputStream;
 
     @BeforeEach

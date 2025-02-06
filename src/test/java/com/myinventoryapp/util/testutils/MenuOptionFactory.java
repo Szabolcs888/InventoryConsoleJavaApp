@@ -8,6 +8,10 @@ import com.myinventoryapp.ui.menu.*;
 
 public class MenuOptionFactory {
 
+    private MenuOptionFactory() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
     public static MenuOption1Sell createMenuOption1Sell() {
         CustomerService customerService = new CustomerService();
         ProductService productService = new ProductService();

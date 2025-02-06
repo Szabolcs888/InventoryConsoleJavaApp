@@ -34,13 +34,13 @@ class IdUtilsTest {
                 new SalesTransaction("trId8765603", "Thomas Mann", "cID2633111",
                         "coffee", 3, 1800, "2024.11.07. 21:49:51")));
 
-        try (MockedStatic<ProductRepository> mockProductRepo = Mockito.mockStatic(ProductRepository.class);
-             MockedStatic<CustomerRepository> mockCustomerRepo = Mockito.mockStatic(CustomerRepository.class);
-             MockedStatic<SalesTransactionRepository> mockTransactionRepo = Mockito.mockStatic(SalesTransactionRepository.class)) {
+        try (MockedStatic<ProductRepository> mockProductRepository = Mockito.mockStatic(ProductRepository.class);
+             MockedStatic<CustomerRepository> mockCustomerRepository = Mockito.mockStatic(CustomerRepository.class);
+             MockedStatic<SalesTransactionRepository> mockTransactionRepository = Mockito.mockStatic(SalesTransactionRepository.class)) {
 
-            mockProductRepo.when(ProductRepository::getProductList).thenAnswer(invocation -> productList);
-            mockCustomerRepo.when(CustomerRepository::getCustomerList).thenAnswer(invocation -> customerList);
-            mockTransactionRepo.when(SalesTransactionRepository::getSalesTransactionList).thenAnswer(invocation -> transactionList);
+            mockProductRepository.when(ProductRepository::getProductList).thenAnswer(invocation -> productList);
+            mockCustomerRepository.when(CustomerRepository::getCustomerList).thenAnswer(invocation -> customerList);
+            mockTransactionRepository.when(SalesTransactionRepository::getSalesTransactionList).thenAnswer(invocation -> transactionList);
 
             Set<Integer> generatedIds = new HashSet<>();
             for (int i = 0; i < 1000; i++) {
@@ -51,7 +51,7 @@ class IdUtilsTest {
                 assertFalse(generatedIds.contains(id), "Generated ID already existed: " + id);
 
                 productList.add(new Product("mockProduct", "pr" + id, 500, 10));
-                mockProductRepo.when(ProductRepository::getProductList).thenAnswer(invocation -> productList);
+                mockProductRepository.when(ProductRepository::getProductList).thenAnswer(invocation -> productList);
 
                 generatedIds.add(id);
             }

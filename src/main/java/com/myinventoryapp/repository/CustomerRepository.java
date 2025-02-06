@@ -6,23 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class CustomerRepository {
-    private static final List<Customer> customerList = new ArrayList<>();
+    private static final List<Customer> CUSTOMER_LIST = new ArrayList<>();
 
     private CustomerRepository() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
     public static List<Customer> getCustomerList() {
-        return new ArrayList<>(customerList);
+        return new ArrayList<>(CUSTOMER_LIST);
     }
 
     public static void addCustomer(Customer customer) {
-        customerList.add(customer);
+        CUSTOMER_LIST.add(customer);
     }
 
     public static Customer findCustomerByName(String customerName) {
         Customer foundCustomerByName = null;
-        for (Customer customer : customerList) {
+        for (Customer customer : CUSTOMER_LIST) {
             if (customer.getCustomerName().equalsIgnoreCase(customerName)) {
                 foundCustomerByName = customer;
                 break;
@@ -32,6 +32,6 @@ public final class CustomerRepository {
     }
 
     public static void clearCustomerList() {
-        customerList.clear();
+        CUSTOMER_LIST.clear();
     }
 }

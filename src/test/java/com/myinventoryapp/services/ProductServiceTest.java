@@ -83,7 +83,7 @@ class ProductServiceTest {
              MockedStatic<ProductRepository> mockedProductRepository = Mockito.mockStatic(ProductRepository.class);
              MockedStatic<ProductDisplayHelper> mockedProductDisplayHelper = Mockito.mockStatic(ProductDisplayHelper.class)) {
 
-            mockedIdUtils.when(IdUtils::generateId).thenReturn(5204875);
+            mockedIdUtils.when(IdUtils::generateId).thenReturn(5223508);
             mockedProductRepository.when(() ->
                     ProductRepository.addProduct(any(Product.class))).thenAnswer(invocation -> null);
             mockedProductDisplayHelper.when(() ->
@@ -92,7 +92,7 @@ class ProductServiceTest {
             ProductService productService = new ProductService();
             productService.addNewProduct(productName, unitPrice, quantity);
 
-            String expectedProductId = "pr5204875";
+            String expectedProductId = "pr5223508";
             mockedProductDisplayHelper.verify(() -> ProductDisplayHelper.displayProductInfoAfterGoodsReceipt(
                     argThat(product ->
                             product.getProductName().equals(productName) &&

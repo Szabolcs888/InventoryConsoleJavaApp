@@ -16,9 +16,9 @@ class ColorsTest {
 
     @Test
     void testGetColorCode_CorrectMapping() {
-        assertEquals(1, Colors.RESET.ordinal() + 1);
-        assertEquals(2, Colors.RED.ordinal() + 1);
-        assertEquals(3, Colors.GREEN.ordinal() + 1);
-        assertEquals(4, Colors.GREEN_UNDERLINED.ordinal() + 1);
+        assertEquals(1, Colors.RESET.ordinal() + 1, "RESET enum position is incorrect");
+        assertEquals(2, Colors.RED.ordinal() + 1, "RED enum position is incorrect");
+        assertEquals(3, Colors.GREEN.ordinal() + 1, "GREEN enum position is incorrect");
+        assertEquals(4, Colors.GREEN_UNDERLINED.ordinal() + 1, "GREEN_UNDERLINED enum position is incorrect");
     }
 }

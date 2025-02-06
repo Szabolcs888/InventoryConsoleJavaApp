@@ -6,21 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class SalesTransactionRepository {
-    private static final List<SalesTransaction> transactionList = new ArrayList<>();
+    private static final List<SalesTransaction> TRANSACTION_LIST = new ArrayList<>();
 
     private SalesTransactionRepository() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
     }
 
     public static List<SalesTransaction> getSalesTransactionList() {
-        return new ArrayList<>(transactionList);
+        return new ArrayList<>(TRANSACTION_LIST);
     }
 
     public static void addSalesTransaction(SalesTransaction salesTransaction) {
-        transactionList.add(salesTransaction);
+        TRANSACTION_LIST.add(salesTransaction);
     }
 
     public static void clearSalesTransactionList() {
-        transactionList.clear();
+        TRANSACTION_LIST.clear();
     }
 }

@@ -51,10 +51,10 @@ class FileUtilsTest {
 
             assertEquals(productList, result, "The returned list should match the expected content.");
             mockedFiles.verify(() -> Files.readAllLines(Paths.get(filePath), StandardCharsets.ISO_8859_1), times(1));
-            String OkMessage = "OK..";
+            String okMessage = "OK..";
             String output = outputStream.toString();
-            assertTrue(output.contains(OkMessage),
-                    "Expected message '" + OkMessage + "' was not found in the output.");
+            assertTrue(output.contains(okMessage),
+                    "Expected message '" + okMessage + "' was not found in the output.");
             String fileNotFound = "COULD NOT BE FOUND!";
             assertFalse(output.contains(fileNotFound),
                     "The '" + fileNotFound + "' message should not appear in the output.");
@@ -73,10 +73,10 @@ class FileUtilsTest {
 
             assertEquals(Collections.emptyList(), result, "The returned list should match the expected content.");
             mockedFiles.verify(() -> Files.readAllLines(Paths.get(filePath), StandardCharsets.ISO_8859_1), times(1));
-            String OkMessage = "OK..";
+            String okMessage = "OK..";
             String output = outputStream.toString();
-            assertFalse(output.contains(OkMessage),
-                    "The '" + OkMessage + "' message should not appear in the output.");
+            assertFalse(output.contains(okMessage),
+                    "The '" + okMessage + "' message should not appear in the output.");
             String fileNotFound = "COULD NOT BE FOUND!";
             assertTrue(output.contains(fileNotFound),
                     "Expected message '" + fileNotFound + "' was not found in the output.");

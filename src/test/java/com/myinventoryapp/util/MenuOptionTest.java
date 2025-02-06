@@ -39,11 +39,11 @@ class MenuOptionTest {
 
     @Test
     void testEnumValues_CorrectMapping() {
-        assertEquals(1, MenuOption.SELL_PRODUCT.ordinal() + 1);
-        assertEquals(2, MenuOption.RECEIVE_PRODUCT.ordinal() + 1);
-        assertEquals(3, MenuOption.DISPLAY_AVAILABLE_PRODUCTS.ordinal() + 1);
-        assertEquals(4, MenuOption.DISPLAY_CUSTOMERS.ordinal() + 1);
-        assertEquals(5, MenuOption.DISPLAY_TRANSACTIONS.ordinal() + 1);
-        assertEquals(6, MenuOption.SAVE_AND_EXIT.ordinal() + 1);
+        assertEquals(1, MenuOption.SELL_PRODUCT.ordinal() + 1, "SELL_PRODUCT enum position is incorrect");
+        assertEquals(2, MenuOption.RECEIVE_PRODUCT.ordinal() + 1, "RECEIVE_PRODUCT enum position is incorrect");
+        assertEquals(3, MenuOption.DISPLAY_AVAILABLE_PRODUCTS.ordinal() + 1, "DISPLAY_AVAILABLE_PRODUCTS enum position is incorrect");
+        assertEquals(4, MenuOption.DISPLAY_CUSTOMERS.ordinal() + 1, "DISPLAY_CUSTOMERS enum position is incorrect");
+        assertEquals(5, MenuOption.DISPLAY_TRANSACTIONS.ordinal() + 1, "DISPLAY_TRANSACTIONS enum position is incorrect");
+        assertEquals(6, MenuOption.SAVE_AND_EXIT.ordinal() + 1, "SAVE_AND_EXIT enum position is incorrect");
     }
 }
