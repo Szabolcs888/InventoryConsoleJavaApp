@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +44,7 @@ class TransactionDisplayHelperTest {
         TransactionDisplayHelper.displayTransactionList(transactionList, MENU_MESSAGE);
 
         String expectedMenuMessage = "-DISPLAY TRANSACTIONS MENU-";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMenuMessage),
                 "Expected message '" + expectedMenuMessage + "' was not found in the output.");
         String expectedTransactionsMessage = "There are a total of 3 transactions in the inventory:";
@@ -70,7 +71,7 @@ class TransactionDisplayHelperTest {
         TransactionDisplayHelper.displayTransactionList(transactionList, MENU_MESSAGE);
 
         String expectedMenuMessage = "-DISPLAY TRANSACTIONS MENU-";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMenuMessage),
                 "Expected message '" + expectedMenuMessage + "' was not found in the output.");
         String expectedNoTransactionsMessage = "There are currently no transactions in the inventory!";
@@ -87,7 +88,7 @@ class TransactionDisplayHelperTest {
                 true, "2024.02.12. 20:06:14");
 
         String expectedTransactionDetailsMessage1 = "TRANSACTION DETAILS: ";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedTransactionDetailsMessage1),
                 "Expected message '" + expectedTransactionDetailsMessage1 + "' was not found in the output.");
         String expectedTransactionDetails1 = "Customer name: Kovács Ágnes (cID5513060 / returning customer)";
@@ -109,7 +110,7 @@ class TransactionDisplayHelperTest {
                 false, "2024.11.03. 23:38:23");
 
         String expectedTransactionDetailsMessage1 = "TRANSACTION DETAILS: ";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedTransactionDetailsMessage1),
                 "Expected message '" + expectedTransactionDetailsMessage1 + "' was not found in the output.");
         String expectedTransactionDetails1 = "Customer name: Szeleczky Zita (cID5882118 / newly registered)";

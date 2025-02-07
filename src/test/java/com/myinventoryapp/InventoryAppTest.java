@@ -13,6 +13,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,7 +40,7 @@ class InventoryAppTest {
 
             String expectedMessage = "Welcome to the inventory system!" +
                     "You can choose from the following menu items:";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {
@@ -93,7 +94,7 @@ class InventoryAppTest {
             inventoryApp.menuSelection(welcomeMessage);
 
             String expectedMessage = "You can choose from 1 to 6!";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
             mockedErrorHandler.verify(() -> ErrorHandler.getValidNumber(anyString()), times(2));

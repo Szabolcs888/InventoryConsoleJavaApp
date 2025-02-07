@@ -9,8 +9,8 @@ public final class UserInputUtils {
     }
 
     public static String readFromUser(String question) {
-        Scanner scanner = new Scanner(System.in);
         System.out.println(question);
+        Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().trim();
     }
 }

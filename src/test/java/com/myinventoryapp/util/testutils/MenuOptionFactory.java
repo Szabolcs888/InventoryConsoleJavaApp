@@ -6,7 +6,7 @@ import com.myinventoryapp.services.ProductService;
 import com.myinventoryapp.services.TransactionService;
 import com.myinventoryapp.ui.menu.*;
 
-public class MenuOptionFactory {
+public final class MenuOptionFactory {
 
     private MenuOptionFactory() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");

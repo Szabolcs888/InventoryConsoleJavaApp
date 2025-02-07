@@ -14,6 +14,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -89,7 +90,7 @@ class DataLoaderTest {
             dataLoader.loadProductsFromFile(productsFilePath);
 
             String expectedMessage = "Checking the database of products: ";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {
@@ -176,7 +177,7 @@ class DataLoaderTest {
             dataLoader.loadCustomersFromFile(customersFilePath);
 
             String expectedMessage = "Checking the database of customers:";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {
@@ -264,7 +265,7 @@ class DataLoaderTest {
             dataLoader.loadTransactionsFromFile(transactionsFilePath);
 
             String expectedMessage = "Checking the database of transactions: ";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {

@@ -10,6 +10,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayProductList(productList, MENU_MESSAGE);
 
         String expectedMessage = "-DISPLAY AVAILABLE PRODUCTS MENU-";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
     }
@@ -50,7 +51,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayProductList(productList, MENU_MESSAGE);
 
         String expectedMessage = "There are currently no products in the inventory!";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
     }
@@ -66,7 +67,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayProductList(productList, MENU_MESSAGE);
 
         String expectedMessage = "There are a total of " + productList.size() + " items in the inventory:";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
         for (Product product : productList) {
@@ -82,7 +83,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayProductInfoAfterGoodsReceipt(newProduct);
 
         String expectedProductInfoMessage = "THE PRODUCT HAS BEEN ADDED TO THE INVENTORY:";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedProductInfoMessage),
                 "Expected message '" + expectedProductInfoMessage + "' was not found in the output.");
         String expectedProductDataMessage = "Product name: coffee\n" +
@@ -108,7 +109,7 @@ class ProductDisplayHelperTest {
 
             String expectedWarningMessage =
                     "The product named \"red wine\" is not in the inventory, please choose another product:";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedWarningMessage),
                     "Expected message '" + expectedWarningMessage + "' was not found in the output.");
             String expectedListedAvailableProducts = "orange juice, pineapple, cherry";
@@ -127,7 +128,7 @@ class ProductDisplayHelperTest {
 
         String expectedWarningMessage =
                 "There are a total of " + quantity + " coffee in stock, you cannot sell more than that!";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedWarningMessage),
                 "Expected message '" + expectedWarningMessage + "' was not found in the output.");
     }
@@ -142,7 +143,7 @@ class ProductDisplayHelperTest {
 
         String expectedWarningMessage =
                 "The quantity sold must be at least 1!";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedWarningMessage),
                 "Expected message '" + expectedWarningMessage + "' was not found in the output.");
     }
@@ -154,7 +155,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayProductInfoIfProductFound(product);
 
         String expectedProductInfoMessage = "DETAILS OF THE PRODUCT NAMED ";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedProductInfoMessage),
                 "Expected message '" + expectedProductInfoMessage + "' was not found in the output.");
         String expectedProductDataMessage = "Product name: pineapple, Product ID: pr5711807, Unit price: 894 HUF, Available quantity: 35";
@@ -170,7 +171,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayProductInfoAfterSellAndUpdateGoodsReceipt(product, productInfoMessage);
 
         String expectedProductInfoMessage = "PRODUCT DATA AFTER THE TRANSACTION:";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedProductInfoMessage),
                 "Expected message '" + expectedProductInfoMessage + "' was not found in the output.");
         String expectedProductDataMessage = "Product name: cherry, Product ID: pr7860912, Unit price: 452 HUF, Available quantity: 115";
@@ -185,7 +186,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayExistingProductInfo(product);
 
         String expectedProductInfoMessage = "THE PRODUCT NAMED mango IS ALREADY IN THE INVENTORY. DETAILS:";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedProductInfoMessage),
                 "Expected message '" + expectedProductInfoMessage + "' was not found in the output.");
         String expectedProductDataMessage = "Product name: mango, Product ID: pr4531265, Unit price: 1350 HUF, Available quantity: 46";
@@ -199,7 +200,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayOutOfStockMessage();
 
         String expectedMessage = "The product is in the inventory but currently out of stock. Please choose another!";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
     }
@@ -210,7 +211,7 @@ class ProductDisplayHelperTest {
         ProductDisplayHelper.displayNoProductsAvailableMessage();
 
         String expectedMessage = "There are currently no products available for sale!";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
     }

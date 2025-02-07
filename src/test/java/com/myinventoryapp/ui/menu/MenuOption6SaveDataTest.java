@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
@@ -23,7 +24,7 @@ class MenuOption6SaveDataTest {
         menuOption6SaveData.saveData();
 
         String expectedMessage = "Data has been saved..";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
         Mockito.verify(mockDataSaver, times(1)).saveAllData();

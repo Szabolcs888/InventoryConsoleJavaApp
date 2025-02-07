@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +36,7 @@ class CustomerDisplayHelperTest {
         CustomerDisplayHelper.displayCustomerList(customerList, MENU_MESSAGE);
 
         String expectedMessage = "-DISPLAY CUSTOMERS MENU-";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
     }
@@ -47,7 +48,7 @@ class CustomerDisplayHelperTest {
         CustomerDisplayHelper.displayCustomerList(customerList, MENU_MESSAGE);
 
         String expectedMessage = "There are currently no registered customers in the inventory!";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
     }
@@ -63,7 +64,7 @@ class CustomerDisplayHelperTest {
         CustomerDisplayHelper.displayCustomerList(customerList, MENU_MESSAGE);
 
         String expectedMessage = "There are a total of " + customerList.size() + " registered customers in the inventory:";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
         for (Customer customer : customerList) {

@@ -11,6 +11,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -171,7 +172,7 @@ class ProductServiceTest {
             productService.deleteProduct(product);
 
             String expectedAfterDeletingMessage = "\nThe item has been deleted!";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedAfterDeletingMessage),
                     "Expected message '" + expectedAfterDeletingMessage + "' was not found in the output.");
         } finally {
@@ -195,7 +196,7 @@ class ProductServiceTest {
             productService.deleteProduct(product);
 
             String unexpectedAfterDeletingMessage = "\nThe item has been deleted!";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertFalse(output.contains(unexpectedAfterDeletingMessage),
                     "Expected message '" + unexpectedAfterDeletingMessage + "' found in the output.");
         } finally {
@@ -422,7 +423,7 @@ class ProductServiceTest {
         productService.setNewQuantity(product, newQuantity);
 
         String expectedMessage = "\nThe modification has been made!";
-        String output = outputStream.toString();
+        String output = outputStream.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains(expectedMessage),
                 "Expected message '" + expectedMessage + "' was not found in the output.");
 

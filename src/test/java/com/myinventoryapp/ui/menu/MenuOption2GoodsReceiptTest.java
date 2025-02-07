@@ -12,6 +12,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -36,7 +37,7 @@ class MenuOption2GoodsReceiptTest {
             spyMenuOption2GoodsReceipt.goodsReceipt("\n-RECEIVE PRODUCT MENU-\n");
 
             String expectedMessage = "-RECEIVE PRODUCT MENU-";
-            String output = outputStream.toString();
+            String output = outputStream.toString(StandardCharsets.UTF_8);
             assertTrue(output.contains(expectedMessage),
                     "Expected message '" + expectedMessage + "' was not found in the output.");
         } finally {
