@@ -7,7 +7,7 @@ Through unit testing, I also learned the importance of applying dependency injec
 Integration and end-to-end tests will be uploaded soon.
 
 _note:_ 
->  I deliberately did not extract the repetitive assert/verify logs into a separate "assertLog" class because I felt that the test would be more readable if an actual comment remained in place instead of an additional method call.
+>  In this project, I deliberately did not extract the repetitive assert/verify logs into a separate "assertLog" class because I felt that the test would be more readable if an actual comment remained in place instead of an additional method call.
 
 #
 #
@@ -19,5 +19,5 @@ A unit tesztelés során megtanultam azt is, hogy mennyire fontos a dependency i
 Hamarosan az integrációs és az end-to-end tesztek is feltöltésre kerülnek.
 
 _megjegyzés:_
->  Az ismétlődő assert/verify logokat direkt nem szerveztem ki egy "assertLog" osztályba, mert úgy éreztem, hogy maga a teszt olvashatóbb úgy, ha a komment helyén valóban egy komment van és nem egy újabb metódushívás.
+>  Ebben a projektben az ismétlődő assert/verify logokat direkt nem szerveztem ki egy "assertLog" osztályba, mert úgy éreztem, hogy maga az adott teszt olvashatóbb úgy, ha a komment helyén valóban egy komment van és nem egy újabb metódushívás.
   
